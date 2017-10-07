@@ -22,12 +22,12 @@ public final class MnemonicGenerationTests {
 
     @Test(expected = RuntimeException.class)
     public void tooLargeEntropy() throws Exception {
-        createMnemonic(repeatString(65, "f"), English.INSTANCE);
+        createMnemonic(repeatString(66, "f"), English.INSTANCE);
     }
 
     @Test(expected = RuntimeException.class)
     public void nonMultipleOf32() throws Exception {
-        createMnemonic(repeatString(33, "f"), English.INSTANCE);
+        createMnemonic(repeatString(34, "f"), English.INSTANCE);
     }
 
     @Test
