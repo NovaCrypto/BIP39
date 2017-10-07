@@ -1,5 +1,7 @@
 package io.github.novacrypto.bip39.wordlists;
 
+import io.github.novacrypto.bip39.WordList;
+
 /**
  * Created by aevans on 2017-10-07.
  * Source: https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt

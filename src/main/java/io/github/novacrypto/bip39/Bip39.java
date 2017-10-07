@@ -32,7 +32,7 @@ public final class Bip39 {
         }
     }
 
-    public static String bip39Seed(String mnemonic, String passphrase) throws Exception {
+    public static String getSeed(String mnemonic, String passphrase) throws Exception {
         mnemonic = Normalizer.normalize(mnemonic, Normalizer.Form.NFKD);
         passphrase = Normalizer.normalize(passphrase, Normalizer.Form.NFKD);
 

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by aevans on 2017-10-05.
  */
-public final class Bip39SeedGenerationTests {
+public final class SeedGenerationTests {
 
     @Test
     public void bip39_english() throws Exception {
@@ -45,6 +45,6 @@ public final class Bip39SeedGenerationTests {
     }
 
     private static String bip39Seed(String mnemonic, String passphrase) throws Exception {
-        return Bip39.bip39Seed(mnemonic, passphrase);
+        return Bip39.getSeed(mnemonic, passphrase);
     }
 }

@@ -1,4 +1,4 @@
-package io.github.novacrypto.bip39.wordlists;
+package io.github.novacrypto.bip39;
 
 /**
  * Created by aevans on 2017-10-07.
