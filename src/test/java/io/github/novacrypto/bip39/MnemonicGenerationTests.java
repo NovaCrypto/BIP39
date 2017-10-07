@@ -7,13 +7,18 @@ import io.github.novacrypto.bip39.wordlists.English;
 import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
-import static io.github.novacrypto.bip39.MnemonicGeneration.createMnemonic;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by aevans on 2017-10-05.
  */
 public final class MnemonicGenerationTests {
+
+    private static String createMnemonic(String f, WordList instance) {
+        final StringBuilder sb = new StringBuilder();
+        MnemonicGeneration.createMnemonic(f, instance, sb::append);
+        return sb.toString();
+    }
 
     @Test(expected = RuntimeException.class)
     public void tooSmallEntropy() throws Exception {

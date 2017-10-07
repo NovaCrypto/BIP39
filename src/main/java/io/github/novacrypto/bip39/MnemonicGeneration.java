@@ -11,13 +11,19 @@ import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
  */
 public final class MnemonicGeneration {
 
+    public interface Target {
+        void append(final CharSequence string);
+    }
+
     /**
-     *
      * @param entropyHex 128-256 bits of hex entropy, number of bits must also be divisible by 32
-     * @param wordList List of 2048 words to select from
-     * @return
+     * @param wordList   List of 2048 words to select from
+     * @param target     Where to write the mnemonic to
      */
-    public static CharSequence createMnemonic(final CharSequence entropyHex, final WordList wordList) {
+    public static void createMnemonic(
+            final CharSequence entropyHex,
+            final WordList wordList,
+            final Target target) {
         final int length = entropyHex.length();
         if (length % 2 == 1)
             throw new RuntimeException("Length of hex chars must be divisible by 2");
@@ -26,19 +32,41 @@ public final class MnemonicGeneration {
             for (int i = 0, j = 0; i < length; i += 2, j++) {
                 entropy[j] = (byte) (parseHex(entropyHex.charAt(i)) << 4 | parseHex(entropyHex.charAt(i + 1)));
             }
-            return createMnemonic(entropy, wordList);
+            createMnemonic(entropy, wordList, target);
         } finally {
             Arrays.fill(entropy, (byte) 0);
         }
     }
 
     /**
-     *
-     * @param entropy 128-256 bits of hex entropy, number of bits must also be divisible by 32
+     * @param entropy  128-256 bits of hex entropy, number of bits must also be divisible by 32
      * @param wordList List of 2048 words to select from
-     * @return
+     * @param target   Where to write the mnemonic to
      */
-    public static CharSequence createMnemonic(final byte[] entropy, final WordList wordList) {
+    public static void createMnemonic(
+            final byte[] entropy,
+            final WordList wordList,
+            final Target target) {
+        final int[] wordIndexes = wordIndexes(entropy);
+        try {
+            createMnemonic(wordList, wordIndexes, target);
+        } finally {
+            Arrays.fill(wordIndexes, 0);
+        }
+    }
+
+    private static void createMnemonic(
+            final WordList wordList,
+            final int[] wordIndexes,
+            final Target target) {
+        final String space = String.valueOf(wordList.getSpace());
+        for (int i = 0; i < wordIndexes.length; i++) {
+            if (i > 0) target.append(space);
+            target.append(wordList.getWord(wordIndexes[i]));
+        }
+    }
+
+    private static int[] wordIndexes(byte[] entropy) {
         final int ent = entropy.length * 8;
         entropyLengthPreChecks(ent);
 
@@ -55,15 +83,7 @@ public final class MnemonicGeneration {
         for (int i = 0, wi = 0; wi < ms; i += 11, wi++) {
             wordIndexes[wi] = next11Bits(entropyWithChecksum, i);
         }
-
-        final StringBuilder sb = new StringBuilder();
-        for (int word : wordIndexes) {
-            sb.append(wordList.getWord(word));
-            sb.append(wordList.getSpace());
-        }
-        sb.setLength(sb.length() - 1);
-
-        return sb.toString();
+        return wordIndexes;
     }
 
     private static byte firstByteOfSha256(final byte[] entropy) {
