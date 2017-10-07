@@ -1,6 +1,7 @@
 package io.github.novacrypto.bip39;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
@@ -10,24 +11,39 @@ import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
  */
 public final class MnemonicGeneration {
 
-    public static String createMnemonic(final String entropyHex, WordList instance) throws Exception {
-        final int byteCount = entropyHex.length() / 2;
-        final byte[] entropy = new byte[byteCount];
-        for (int i = 0; i < byteCount; i++) {
-            entropy[i] = (byte) Integer.parseInt(entropyHex.substring(i * 2, i * 2 + 2), 16);
+    /**
+     *
+     * @param entropyHex 128-256 bits of hex entropy, number of bits must also be divisible by 32
+     * @param wordList List of 2048 words to select from
+     * @return
+     */
+    public static CharSequence createMnemonic(final CharSequence entropyHex, final WordList wordList) {
+        final int length = entropyHex.length();
+        if (length % 2 == 1)
+            throw new RuntimeException("Length of hex chars must be divisible by 2");
+        final byte[] entropy = new byte[length / 2];
+        try {
+            for (int i = 0, j = 0; i < length; i += 2, j++) {
+                entropy[j] = (byte) (parseHex(entropyHex.charAt(i)) << 4 | parseHex(entropyHex.charAt(i + 1)));
+            }
+            return createMnemonic(entropy, wordList);
+        } finally {
+            Arrays.fill(entropy, (byte) 0);
         }
+    }
+
+    /**
+     *
+     * @param entropy 128-256 bits of hex entropy, number of bits must also be divisible by 32
+     * @param wordList List of 2048 words to select from
+     * @return
+     */
+    public static CharSequence createMnemonic(final byte[] entropy, final WordList wordList) {
         final int ent = entropy.length * 8;
-        if (ent < 128)
-            throw new RuntimeException("Entropy too low 128-256 bits allowed");
-        if (ent > 256)
-            throw new RuntimeException("Entropy too high 128-256 bits allowed");
-        if (ent % 32 > 0)
-            throw new RuntimeException("Number of entropy bits must be divisible by 32");
+        entropyLengthPreChecks(ent);
 
         final byte[] entropyWithChecksum = Arrays.copyOf(entropy, entropy.length + 1);
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        final byte[] hash = digest.digest(entropy);
-        entropyWithChecksum[entropy.length] = hash[0];
+        entropyWithChecksum[entropy.length] = firstByteOfSha256(entropy);
 
         //checksum length
         final int cs = ent / 32;
@@ -40,13 +56,44 @@ public final class MnemonicGeneration {
             wordIndexes[wi] = next11Bits(entropyWithChecksum, i);
         }
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (int word : wordIndexes) {
-            sb.append(instance.getWord(word));
-            sb.append(instance.getSpace());
+            sb.append(wordList.getWord(word));
+            sb.append(wordList.getSpace());
         }
         sb.setLength(sb.length() - 1);
+
         return sb.toString();
     }
 
+    private static byte firstByteOfSha256(final byte[] entropy) {
+        final byte[] hash = sha256().digest(entropy);
+        final byte firstByte = hash[0];
+        Arrays.fill(hash, (byte) 0);
+        return firstByte;
+    }
+
+    private static MessageDigest sha256() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (final NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void entropyLengthPreChecks(final int ent) {
+        if (ent < 128)
+            throw new RuntimeException("Entropy too low, 128-256 bits allowed");
+        if (ent > 256)
+            throw new RuntimeException("Entropy too high, 128-256 bits allowed");
+        if (ent % 32 > 0)
+            throw new RuntimeException("Number of entropy bits must be divisible by 32");
+    }
+
+    private static int parseHex(char c) {
+        if (c >= '0' && c <= '9') return c - '0';
+        if (c >= 'a' && c <= 'f') return (c - 'a') + 10;
+        if (c >= 'A' && c <= 'F') return (c - 'A') + 10;
+        throw new RuntimeException("Invalid hex char " + c);
+    }
 }

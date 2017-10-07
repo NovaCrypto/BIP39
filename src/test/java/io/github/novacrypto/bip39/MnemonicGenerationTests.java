@@ -30,6 +30,11 @@ public final class MnemonicGenerationTests {
         createMnemonic(repeatString(34, "f"), English.INSTANCE);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void notHexPairs() throws Exception {
+        createMnemonic(repeatString(33, "f"), English.INSTANCE);
+    }
+
     @Test
     public void sevenFRepeated() throws Exception {
         assertEquals("legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth useful legal will",
