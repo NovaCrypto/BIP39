@@ -86,7 +86,7 @@ public final class MnemonicGeneration {
         return wordIndexes;
     }
 
-    private static byte firstByteOfSha256(final byte[] entropy) {
+    static byte firstByteOfSha256(final byte[] entropy) {
         final byte[] hash = sha256().digest(entropy);
         final byte firstByte = hash[0];
         Arrays.fill(hash, (byte) 0);

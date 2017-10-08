@@ -7,11 +7,6 @@ import io.github.novacrypto.bip39.wordlists.English;
 import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringJoiner;
 
 import static org.junit.Assert.*;
@@ -20,6 +15,39 @@ import static org.junit.Assert.*;
  * Created by aevans on 2017-10-08.
  */
 public final class MnemonicValidationTests {
+
+    @Test(expected = WordNotFoundException.class)
+    public void bad_english_word() throws Exception {
+        try {
+            validate("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+                    English.INSTANCE);
+        } catch (WordNotFoundException e) {
+            assertEquals("Word not found in word list \"alan\", suggestions \"aisle\", \"alarm\"", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test(expected = WordNotFoundException.class)
+    public void bad_english_word_alphabetically_before_all_others() throws Exception {
+        try {
+            validate("aardvark abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+                    English.INSTANCE);
+        } catch (WordNotFoundException e) {
+            assertEquals("Word not found in word list \"aardvark\", suggestions \"abandon\", \"ability\"", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test(expected = WordNotFoundException.class)
+    public void bad_english_word_alphabetically_after_all_others() throws Exception {
+        try {
+            validate("zymurgy abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+                    English.INSTANCE);
+        } catch (WordNotFoundException e) {
+            assertEquals("Word not found in word list \"zymurgy\", suggestions \"zone\", \"zoo\"", e.getMessage());
+            throw e;
+        }
+    }
 
     @Test
     public void all_english_test_vectors() throws Exception {
@@ -76,89 +104,8 @@ public final class MnemonicValidationTests {
     }
 
     private boolean validate(String mnemonic, WordList wordList) {
-        //build a map to look up word indexes
-        Map<String, Integer> map = new HashMap<>(1 << 11);
-        for (int i = 0; i < 1 << 11; i++) {
-            map.put(wordList.getWord(i), i);
-        }
-
-        //split the mnemonic
-        String[] words = mnemonic.split(String.valueOf(wordList.getSpace()));
-
-        //reverse calculate some of the variables from mnemonic generation, ms, ent, cs
-        final int ms = words.length;
-
-        final int entPlusCs = ms * 11;
-        final int ent = (entPlusCs * 32) / 33;
-        final int cs = ent / 32;
-        assertEquals(entPlusCs, ent + cs);
-        byte[] entropyWithChecksum = new byte[entPlusCs / 8 + (entPlusCs % 8 > 0 ? 1 : 0)];
-
-        //look up the words
-        int[] wordIndexes = new int[ms];
-        for (int i = 0; i < ms; i++) {
-            String word = words[i];
-            Integer index = map.get(word);
-            if (index == null) throw new RuntimeException("Word not found in word list \"" + word + "\"");
-            wordIndexes[i] = index;
-        }
-
-        //build
-        for (int i = 0, bi = 0; i < ms; i++, bi += 11) {
-            writeNext11(entropyWithChecksum, wordIndexes[i], bi);
-        }
-
-        //strip the last byte
-        byte[] entropy = Arrays.copyOf(entropyWithChecksum, entropyWithChecksum.length - 1);
-        byte lastByte = entropyWithChecksum[entropyWithChecksum.length - 1];
-
-        //recalculate hash
-        byte sha = firstByteOfSha256(entropy);
-
-        //we only want to compare the first cs bits
-        byte mask = (byte) ~((1 << (8 - cs)) - 1);
-
-        //if the first cs bits are the same, it's valid
-        return ((sha ^ lastByte) & mask) == 0;
+        return MnemonicValidator
+                .ofWordList(wordList)
+                .validate(mnemonic);
     }
-
-    private void writeNext11(byte[] bytes, int value, int offset) {
-        int skip = offset / 8;
-        int bitSkip = offset % 8;
-        {//byte 0
-            byte firstValue = bytes[skip];
-            byte toWrite = (byte) (value >> (3 + bitSkip));
-            bytes[skip] = (byte) (firstValue | toWrite);
-        }
-
-        {//byte 1
-            byte valueInByte = bytes[skip + 1];
-            final int i = 5 - bitSkip;
-            byte toWrite = (byte) (i > 0 ? (value << i) : (value >> -i));
-            bytes[skip + 1] = (byte) (valueInByte | toWrite);
-        }
-
-        if (bitSkip >= 6) {//byte 2
-            byte valueInByte = bytes[skip + 2];
-            byte toWrite = (byte) (value << 13 - bitSkip);
-            bytes[skip + 2] = (byte) (valueInByte | toWrite);
-        }
-    }
-
-    private static byte firstByteOfSha256(final byte[] entropy) {
-        final byte[] hash = sha256().digest(entropy);
-        final byte firstByte = hash[0];
-        Arrays.fill(hash, (byte) 0);
-        return firstByte;
-    }
-
-    private static MessageDigest sha256() {
-        try {
-            return MessageDigest.getInstance("SHA-256");
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 }
