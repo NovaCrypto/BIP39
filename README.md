@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/NovaCrypto/BIP39.svg?branch=master)](https://travis-ci.org/NovaCrypto/BIP39)
 
-[![Coverage Status](https://coveralls.io/repos/github/NovaCrypto/BIP39/badge.svg?branch=master)](https://coveralls.io/github/NovaCrypto/BIP39?branch=master)
+[![codecov](https://codecov.io/gh/NovaCrypto/BIP39/branch/master/graph/badge.svg)](https://codecov.io/gh/NovaCrypto/BIP39)
 
 Read all about how I wrote this and understanding BIP39 [here](https://medium.com/@_west_on/coding-a-bip39-microlibrary-in-java-bb90c1109123).
 
