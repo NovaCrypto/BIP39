@@ -22,8 +22,8 @@
 package io.github.novacrypto.bip39;
 
 import io.github.novacrypto.bip39.testjson.EnglishJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJsonTestCase;
+import io.github.novacrypto.bip39.testjson.TestVectorJson;
+import io.github.novacrypto.bip39.testjson.TestVector;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -60,9 +60,17 @@ public final class SeedCalculationTests {
 
     @Test
     public void all_japanese_test_vectors() throws Exception {
-        final JapaneseJson data = JapaneseJson.load();
-        for (final JapaneseJsonTestCase testCase : data.data) {
-            assertEquals(testCase.seed, calculateSeedHex(testCase.mnemonic, testCase.passphrase));
+        final TestVectorJson data = TestVectorJson.loadJapanese();
+        for (final TestVector testVector : data.vectors) {
+            assertEquals(testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
+        }
+    }
+
+    @Test
+    public void all_french_test_vectors() throws Exception {
+        final TestVectorJson data = TestVectorJson.loadFrench();
+        for (final TestVector testVector : data.vectors) {
+            assertEquals(testVector.entropy, testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
         }
     }
 

@@ -22,9 +22,10 @@
 package io.github.novacrypto.bip39;
 
 import io.github.novacrypto.bip39.testjson.EnglishJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJsonTestCase;
+import io.github.novacrypto.bip39.testjson.TestVector;
+import io.github.novacrypto.bip39.testjson.TestVectorJson;
 import io.github.novacrypto.bip39.wordlists.English;
+import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
@@ -100,9 +101,17 @@ public final class MnemonicGenerationTests {
 
     @Test
     public void all_japanese_test_vectors() throws Exception {
-        final JapaneseJson data = JapaneseJson.load();
-        for (final JapaneseJsonTestCase testCase : data.data) {
-            assertEquals(testCase.mnemonic, createMnemonic(testCase.entropy, Japanese.INSTANCE));
+        final TestVectorJson data = TestVectorJson.loadJapanese();
+        for (final TestVector testVector : data.vectors) {
+            assertEquals(testVector.mnemonic, createMnemonic(testVector.entropy, Japanese.INSTANCE));
+        }
+    }
+
+    @Test
+    public void all_french_test_vectors() throws Exception {
+        final TestVectorJson data = TestVectorJson.loadFrench();
+        for (final TestVector testVector : data.vectors) {
+            assertEquals(testVector.mnemonic, createMnemonic(testVector.entropy, French.INSTANCE));
         }
     }
 
