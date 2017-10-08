@@ -2,7 +2,7 @@
 
 Read all about how I wrote this and understanding BIP39 [here](https://medium.com/@_west_on/coding-a-bip39-microlibrary-in-java-bb90c1109123).
 
-Apart from generating a seed, only English, French and Japanese [currently supported](https://github.com/NovaCrypto/BIP39/issues/1).
+Apart from generating a seed, only English, French and Japanese [currently packaged](https://github.com/NovaCrypto/BIP39/issues/1), but as `WordList` is an interface and you can provide your own.
 
 # Install
 
