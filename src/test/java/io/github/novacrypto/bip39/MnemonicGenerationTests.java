@@ -106,6 +106,35 @@ public final class MnemonicGenerationTests {
         }
     }
 
+    @Test
+    public void upper_and_lower_case_hex_handled_the_same() throws Exception {
+        final String hex = "0123456789abcdef0123456789abcdef";
+        assertEquals(createMnemonic(hex, English.INSTANCE),
+                createMnemonic(hex.toUpperCase(), English.INSTANCE));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void bad_hex_throws_g() throws Exception {
+        final String hex = "0123456789abcdef0123456789abcdeg";
+        try {
+            createMnemonic(hex, English.INSTANCE);
+        } catch (final RuntimeException e) {
+            assertEquals("Invalid hex char 'g'", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void bad_hex_throws_Z() throws Exception {
+        final String hex = "0123456789abcdef0123456789abcdeZ";
+        try {
+            createMnemonic(hex, English.INSTANCE);
+        } catch (final RuntimeException e) {
+            assertEquals("Invalid hex char 'Z'", e.getMessage());
+            throw e;
+        }
+    }
+
     private static String repeatString(int n, String repeat) {
         return new String(new char[n]).replace("\0", repeat);
     }
