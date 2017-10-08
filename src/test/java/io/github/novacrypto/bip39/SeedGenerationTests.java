@@ -33,6 +33,12 @@ public final class SeedGenerationTests {
     }
 
     @Test
+    public void passphrase_normalization() throws Exception {
+        assertEquals(bip39Seed("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "ｶ"),
+                bip39Seed("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "カ"));
+    }
+
+    @Test
     public void all_japanese_test_vectors() throws Exception {
         final JapaneseJson data = JapaneseJson.load();
         for (final JapaneseJsonTestCase testCase : data.data) {
