@@ -1,0 +1,131 @@
+{
+  "source": "https://iancoleman.github.io/bip39/#french",
+  "data": [
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "implorer visage sonnette voyage véloce pourpre volaille tribunal implorer visage sonnette voyelle",
+      "passphrase": "TREZOR",
+      "seed": "ab9180b7dfdde74e5cf8781e5692e2c0b55afa8bc1987fa8e14e3fb83c88b195c53e9f939f8febc33d2958f5fcd8add57843cb318d8886130ef9c9879c826357",
+      "bip32_xprv": "xprv9s21ZrQH143K3MCzhsD85FFZ2d8vDN2QdRTN63gbU3qHjZxn7utU1kwYGR5bxQkssS1Tji4Tuw8vpTzDWogXxhbWYDKuZveeRBe5wiNsuFJ"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffff",
+      "mnemonic": "zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie voter",
+      "passphrase": "TREZOR",
+      "seed": "7d2f168ce71ba3e40e74baf47a072a94e49973c0dbdb33a62b3a285ab167c704a85d6ce0d15cc6a4dd3bf1311334ee0d290ae7d20115863d5f5633b8dfacf2d4",
+      "bip32_xprv": "xprv9s21ZrQH143K2AsqW9AAdu5C4zUaV45MgyzBQAYbEKtKusR83UzLwCZdqDwqJ59ebNryoNuVA5pEiY1eBYqr64UGkwZGezwaceCqxPWia7M"
+    },
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "implorer visage sonnette voyage véloce pourpre volaille tribunal implorer visage sonnette voyage véloce pourpre volaille tribunal implorer vinaigre",
+      "passphrase": "TREZOR",
+      "seed": "dcf42783150cdb92672c9ea7d13f145401661f10b89bfb012a803ca7713e97181ee28ac327a982060a7f8aaa6e8c649ca2c5b83c24458393fe41739ced31d987",
+      "bip32_xprv": "xprv9s21ZrQH143K2Lq1fbvL5nedyALbSBmmm4EbcVduaPFArtunM6azzNy96pcKbLvVBQcFFDa3Agp54eMhCBH5Ehtbxitv525n2SrhYvALPiD"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffffffffffffffffffff",
+      "mnemonic": "zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie viande",
+      "passphrase": "TREZOR",
+      "seed": "e12d20a535ef5e9e2f87e05b5261bdb51451e052fe484feb87543f5cb7a8822c4aa0152492be1259fba00a28c1e95518a90f0645bdd0eb822516d37ac881f7e0",
+      "bip32_xprv": "xprv9s21ZrQH143K2woSZYBmSoRYygWNGUUrkLiy2i4FmReSqyc568kb1siagkBpHFj6MzLbfuh8TaWKDckfnfphrYyKTAG2rk5y4sGv4fjn5gD"
+    },
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "implorer visage sonnette voyage véloce pourpre volaille tribunal implorer visage sonnette voyage véloce pourpre volaille tribunal implorer visage sonnette voyage véloce pourpre volaille studieux",
+      "passphrase": "TREZOR",
+      "seed": "8f12b35fe92a7586dfbdab9721a91300d0dbe3185d0943021667e62fd5a643e0cf2443e544738c5234009aa50faac0dbb123ac847c31dc25d875c56fe39c6186",
+      "bip32_xprv": "xprv9s21ZrQH143K43qySSryByKtU1Df5foSz6kDEHUsR524HZJzxnKrrU3wTdeSvHVvpitC8nAb2kdeVWGREu22KaiaMF3YjEZQdb7htpY6CXP"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "mnemonic": "zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie zoologie valable",
+      "passphrase": "TREZOR",
+      "seed": "b5e96f552ba44ec827c1bc5ef362e8cea68dd6f36f2c8640aeb171cf9b66198fbdf155fdbcf7dc505431068f972a92442f33cda0065afc1e9a7f5f7097ea6c6a",
+      "bip32_xprv": "xprv9s21ZrQH143K2umcmDhRrUZ8wsZ7ACj6rvFCEuDK1coHWpo1RwYPvy3dpWmvPjstSMm9fm3igm9gjsAesjqAU6Tnejizy919FSmyofhRTyS"
+    },
+    {
+      "entropy": "77c2b00716cec7213839159e404db50d",
+      "mnemonic": "gyrostat aurore absolu chagrin tomate logique soulever brave monstre acajou frisson berger",
+      "passphrase": "TREZOR",
+      "seed": "f4988154e66df3c9ab667914237e87ef809a90f2006e668e596e578d130b357992d64da7f44dbf07754295c9ec3fcfff0ca23988bfacc5b45a7fe7f8c98e55b1",
+      "bip32_xprv": "xprv9s21ZrQH143K4Vr7qo2KQ8YsgSZ7CWURK2KRMWHEn3nYdPo12YSbo1dwP99XLhEAJgTyy8U4kHx4gXksSKFTE1uoacrSqSxFnkrYLqThbgm"
+    },
+    {
+      "entropy": "b63a9c59a6e641f288ebc103017f1da9f8290b3da6bdef7b",
+      "mnemonic": "pénurie sagesse averse écrivain favori vertu brique halte accolade amorcer ratisser enfermer inoculer ivoire vanille sceptre tremper serrure",
+      "passphrase": "TREZOR",
+      "seed": "60355a67adab6b7a275cf123df17d47a884db365373eefff9d62d734048fe86ecec162bffe6e2db0b937788e4fda49144557cb02251c42a13c99628bac068823",
+      "bip32_xprv": "xprv9s21ZrQH143K3dhNTe5wABNgAUSYZWNoC1gc6e5NxGnZ5KjYZV25Msnd84iUZ6CQWvV1e6M9DkoXq9sanF4oPd5kzynKtsn1of8dDDWRYTT"
+    },
+    {
+      "entropy": "3e141609b97933b66a060dcddc71fad1d91677db872031e85f4c015c5e7e8982",
+      "mnemonic": "daigner murmure innocent globe luxueux sérieux nuptial priver résoudre subtil imiter négation loutre cruel fruit suffixe cirque dépenser ruban accabler quotient décaler buvette élégant",
+      "passphrase": "TREZOR",
+      "seed": "3237424feb4554afe9edea53de59ccead07feaef29638523b3408bbd33c97e6cf9ce86313d41aebe3c487d6135b4a3161b2d54623839e5321ca3f455828084ab",
+      "bip32_xprv": "xprv9s21ZrQH143K3LsqcnWZXzeK9mrMRZUyDeQxtnyQAPdXyto68t1fWAHR5UmdYWyZtQgBHwji9vEnuSMAHHFuzxAB139kfq2HnMJbrdvHxAN"
+    },
+    {
+      "entropy": "0460ef47585604c5660618db2e6a7e7f",
+      "mnemonic": "acteur agacer roseau palourde exiler famille méchant prospère sérieux golfeur moufle voyelle",
+      "passphrase": "TREZOR",
+      "seed": "2a6fce53b3f22341c24136ed86e86810410b3ce2590f021f2a90303ef0680373e8dff00f0ccadd0c8545421e64dc44001b5aa5b50eea0ded9b94b149837b1647",
+      "bip32_xprv": "xprv9s21ZrQH143K2Qr4ogkmy4m9bRhnCxPiBT2bMKArBjA8fSzyuLhs8phoGnM5rVsi5LJGs7qBmxD65FNFTFtprW7hZA83ZSwVyqTQ9v6gF4D"
+    },
+    {
+      "entropy": "72f60ebac5dd8add8d2a25a797102c3ce21bc029c200076f",
+      "mnemonic": "globe palace osciller lapin sécable fusion codifier détester nuancer phrase amateur héron boulon sorcier novateur décrire agacer impact",
+      "passphrase": "TREZOR",
+      "seed": "be84f96be871eaa09b5b6d36f94342489e821ceef6d551a4aad4d9357e9c4b96a778d8518fb8c382a8cd7d1cbc43bceba76f5f9a835aa3fc5bea734cfd2de9ab",
+      "bip32_xprv": "xprv9s21ZrQH143K2jWgzyME2ofnF6PV7Q1P7tFiAGri4MrJB7bdpK236L5fhU4NLxnKoqBJTB9uRuxPggvXJ4gHVfudYku5QzNN44be5uzChKU"
+    },
+    {
+      "entropy": "2c85efc7f24ee4573d2b81a6ec66cee209b2dcbd09d8eddc51e0215b0b68e416",
+      "mnemonic": "censurer cheval tuteur superbe toxine cavalier usure gazon nouveau farouche passion puceron meuble fuite urticant crier totem stimulus hachoir dénuder palourde pavoiser littoral social",
+      "passphrase": "TREZOR",
+      "seed": "e0686d5de43478652af2ad67d963decd26ef96022cd2088079af4f7adc5dbaf2f8cb992d3c1d0f28f9a883cd5affc558c6d3f2cc879bbf55bf6db4829718d335",
+      "bip32_xprv": "xprv9s21ZrQH143K33hdXzRWQZyizEaPucvtHa4RJBjh4KUTvGow13mAaYa8zBGYcbZwk4vYLAUwMEHfjmTdCqFcwqmn99sZMmVMWoEwws5m3hz"
+    },
+    {
+      "entropy": "eaebabb2383351fd31d703840b32e9e2",
+      "mnemonic": "thorax étrange tonique gélatine cohésion vortex rasage sottise intrigue éruption pixel querelle",
+      "passphrase": "TREZOR",
+      "seed": "62f8a4471a712f888dca0b676ed2a7d14e2e9edf490b41d7c9830e18f10359c5c83b656c0b196f992ec695ef51d35782147b5478eec6f525352876f02add2e01",
+      "bip32_xprv": "xprv9s21ZrQH143K4DsRfkTdxQjJsk9KqZMhs94RthUAJEcAR5B24qMqLjuijdbD4gKB69364hRzqtD548taBzJdB2wSy6LGZzY3gPcaBzKVMe5"
+    },
+    {
+      "entropy": "7ac45cfe7722ee6c7ba84fbc2d5bd61b45cb2fe5eb65aa78",
+      "mnemonic": "homard brèche déchirer toxine chemise comédie tragique aliment pluie fortune vaillant concert étirer maximal maussade frémir odorant protéger",
+      "passphrase": "TREZOR",
+      "seed": "6511cdc7011b62f0d518d15de676a1c5c1c1d4e08e17209157ff6be6f87cce330addc35b247ca99dbabb68edf7f1c8f8de26aad25c2a1af6be655c639ae5c5d7",
+      "bip32_xprv": "xprv9s21ZrQH143K4DR3RNnBvhB4vC7tZJzNduNmypMFEyuoxDYjd3MY1VZ63upGeFtZDzwJbqxBxLfoehZbwpA5LSpEx16kAwdsJv8Tjqrj5vE"
+    },
+    {
+      "entropy": "4fa1a8bc3e6d80ee1316050e862c1812031493212b7ec3f3bb1b08f168cabeef",
+      "mnemonic": "élaborer anéantir chenille humble scinder guerrier écharpe prélude anonyme cinéma adresse bronzer cimenter dorure inviter garnir public mondial ralentir arriver aveugle féroce virtuose suricate",
+      "passphrase": "TREZOR",
+      "seed": "31aab1fcfa23db8976ebe42738b1e3dca2b2f1f75bc7d0fa810e739422c2286935c1037be1172e27682702678ac4e76ca3552c8ce0597a4a00e2f8d3f72a6594",
+      "bip32_xprv": "xprv9s21ZrQH143K3NWzNDsNxmvcdSKZRcX2asXnkpkGuSzGU6UBtDsw9oJXYXs4rNH9yUo6hBMH6fiDJCGJUP8LJKXcBrX4CoftMitFiBuMX8R"
+    },
+    {
+      "entropy": "18ab19a9f54a9274f03e5209a2ac8a91",
+      "mnemonic": "baleine épuisant forcer thème obtenir créditer présence région algue augurer brave brochure",
+      "passphrase": "TREZOR",
+      "seed": "f283aad985086927dbdd7e948d29c014dfcc1e4de9cb7f6b140a0d23f24e7386ae978ffe9dcfcfe7215fd9874d89646425fa1765d80edfc3a92cfb96ff504f3b",
+      "bip32_xprv": "xprv9s21ZrQH143K3tXUyufRCWxJVXfi3UPXxqgGkdMYaH3JocQ1R1uJKwBhzXhqi4SfriQdZES9j6D7D1yRURWuuUnKpFDCdvceNFpQ948iJE2"
+    },
+    {
+      "entropy": "18a2e1d81b8ecfb2a333adcb0c17a5b9eb76cc5d05db91a4",
+      "mnemonic": "baleine aviser grogner connoter torche séduire légume griffure relatif expédier tendre gorille peser ficeler gouffre plateau loyal calvaire",
+      "passphrase": "TREZOR",
+      "seed": "a5d07758ddd70074dcdc39c6166eea091f7eb10b646708540bdd3cfd617944ddbc4844b8fc2af1e92af3504b0dfe20a92eb68eeef0f4f71cd8e0f793848ba882",
+      "bip32_xprv": "xprv9s21ZrQH143K4CpMDJk4LwtnvEr6oRsXccYE1MGWymLykwF6fYnZwvHuAbzn5uHVTrhgozCqU7DKY8oHnaY76GqjoQHx9y7TkD9SgmyJPCs"
+    },
+    {
+      "entropy": "15da872c95a13dd738fbf50e427583ad61f18fd99f628c417a61cf8343c90419",
+      "mnemonic": "autruche rythme relever causer astuce tiroir sucre imiter anodin astre exposer essieu blessant réactif fidèle tolérant lavoir amiral médecin mortier cobra superbe arbitre cérébral",
+      "passphrase": "TREZOR",
+      "seed": "3e9a3b483d0f9773a392318b12140dc84796c5391736f29ddb45b033f2cb4e1ea8b81c7192c4ca49fe7da0e5c39441a33f036f0d233896d76644133ea0068369",
+      "bip32_xprv": "xprv9s21ZrQH143K2kHYTt8X36uZkDhwKaQeBwuTNvXexvrBV13yFVf9u7d3k31kvCbP2QoDamx3ZDXn6DW1oHUc9BRf7MMjLXz5xgjpvnBew2h"
+    }
+  ]
+}

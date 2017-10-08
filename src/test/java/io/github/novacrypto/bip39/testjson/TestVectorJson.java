@@ -21,9 +21,24 @@
 
 package io.github.novacrypto.bip39.testjson;
 
-public final class JapaneseJsonTestCase {
-    public String mnemonic;
-    public String passphrase;
-    public String seed;
-    public String entropy;
+import com.google.gson.annotations.SerializedName;
+import io.github.novacrypto.bip39.Resources;
+
+import static org.junit.Assert.assertEquals;
+
+public final class TestVectorJson {
+    @SerializedName("data")
+    public TestVector[] vectors;
+
+    public static TestVectorJson loadJapanese() {
+        final TestVectorJson data = Resources.loadJsonResource("bip39_japanese_test_vectors.json", TestVectorJson.class);
+        assertEquals(24, data.vectors.length);
+        return data;
+    }
+
+    public static TestVectorJson loadFrench() {
+        final TestVectorJson data = Resources.loadJsonResource("bip39_french_test_vectors.json", TestVectorJson.class);
+        assertEquals(18, data.vectors.length);
+        return data;
+    }
 }

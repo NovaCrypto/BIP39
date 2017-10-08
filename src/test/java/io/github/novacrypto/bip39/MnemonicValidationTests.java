@@ -25,9 +25,10 @@ import io.github.novacrypto.bip39.Validation.InvalidChecksumException;
 import io.github.novacrypto.bip39.Validation.InvalidWordCountException;
 import io.github.novacrypto.bip39.Validation.WordNotFoundException;
 import io.github.novacrypto.bip39.testjson.EnglishJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJson;
-import io.github.novacrypto.bip39.testjson.JapaneseJsonTestCase;
+import io.github.novacrypto.bip39.testjson.TestVector;
+import io.github.novacrypto.bip39.testjson.TestVectorJson;
 import io.github.novacrypto.bip39.wordlists.English;
+import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
@@ -158,19 +159,27 @@ public final class MnemonicValidationTests {
 
     @Test
     public void all_japanese_test_vectors() throws Exception {
-        final JapaneseJson data = JapaneseJson.load();
-        for (final JapaneseJsonTestCase testCase : data.data) {
-            assertTrue(validate(testCase.mnemonic, Japanese.INSTANCE));
+        final TestVectorJson data = TestVectorJson.loadJapanese();
+        for (final TestVector testVector : data.vectors) {
+            assertTrue(validate(testVector.mnemonic, Japanese.INSTANCE));
+        }
+    }
+
+    @Test
+    public void all_french_test_vectors() throws Exception {
+        final TestVectorJson data = TestVectorJson.loadFrench();
+        for (final TestVector testVector : data.vectors) {
+            assertTrue(validate(testVector.mnemonic, French.INSTANCE));
         }
     }
 
     @Test
     public void all_japanese_test_vectors_words_swapped() throws Exception {
         int testCaseCount = 0;
-        final JapaneseJson data = JapaneseJson.load();
-        for (final JapaneseJsonTestCase testCase : data.data) {
-            final String mnemonic = swapWords(testCase.mnemonic, 1, 3, Japanese.INSTANCE);
-            if (mnemonic.equals(testCase.mnemonic)) continue; //word were same
+        final TestVectorJson data = TestVectorJson.loadJapanese();
+        for (final TestVector testVector : data.vectors) {
+            final String mnemonic = swapWords(testVector.mnemonic, 1, 3, Japanese.INSTANCE);
+            if (mnemonic.equals(testVector.mnemonic)) continue; //word were same
             assertFalse(validate(mnemonic, Japanese.INSTANCE));
             testCaseCount++;
         }
