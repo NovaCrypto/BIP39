@@ -29,6 +29,8 @@ dependencies {
 
 ## Generate a mnemonic
 
+Using a `StringBuilder`:
+
 ```
 StringBuffer sb = new StringBuffer();
 byte[] entropy = new byte[128 / 8];
@@ -36,6 +38,19 @@ new SecureRandom().nextBytes(entropy);
 new MnemonicGenerator(English.INSTANCE)
     .createMnemonic(entropy, sb::append);
 System.out.println(sb.toString());
+```
+
+If you're paranoid and/or need higher than normal [memory security](https://medium.com/@_west_on/protecting-strings-in-jvm-memory-84c365f8f01c), consider using a [`SecureCharBuffer`](https://github.com/NovaCrypto/SecureString):
+
+```
+try (SecureCharBuffer secure = new SecureCharBuffer()) {
+    final byte[] entropy = new byte[128 / 8];
+    new SecureRandom().nextBytes(entropy);
+    new MnemonicGenerator(English.INSTANCE)
+        .createMnemonic(entropy, secure::append);
+    Arrays.fill(entropy, (byte) 0); //empty entropy
+    //do something with your secure mnemonic
+}
 ```
 
 ## Validate a mnemonic
