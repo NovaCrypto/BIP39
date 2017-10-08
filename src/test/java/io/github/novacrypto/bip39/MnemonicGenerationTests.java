@@ -39,14 +39,31 @@ public final class MnemonicGenerationTests {
         return sb.toString();
     }
 
+    private static String createMnemonic(byte[] f, WordList wordList) {
+        final StringBuilder sb = new StringBuilder();
+        new MnemonicGenerator(wordList)
+                .createMnemonic(f, sb::append);
+        return sb.toString();
+    }
+
     @Test(expected = RuntimeException.class)
     public void tooSmallEntropy() throws Exception {
-        createMnemonic(repeatString(31, "f"), English.INSTANCE);
+        createMnemonic(repeatString(30, "f"), English.INSTANCE);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void tooSmallEntropyBytes() throws Exception {
+        createMnemonic(new byte[15], English.INSTANCE);
     }
 
     @Test(expected = RuntimeException.class)
     public void tooLargeEntropy() throws Exception {
         createMnemonic(repeatString(66, "f"), English.INSTANCE);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void tooLargeEntropyBytes() throws Exception {
+        createMnemonic(new byte[33], English.INSTANCE);
     }
 
     @Test(expected = RuntimeException.class)

@@ -23,9 +23,6 @@ package io.github.novacrypto.bip39;
 
 final class ByteUtils {
 
-    private ByteUtils() {
-    }
-
     static int next11Bits(byte[] bytes, int offset) {
         final int skip = offset / 8;
         final int lowerBitsToRemove = (3 * 8 - 11) - (offset % 8);
