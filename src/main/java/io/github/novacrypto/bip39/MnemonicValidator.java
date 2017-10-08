@@ -1,5 +1,9 @@
 package io.github.novacrypto.bip39;
 
+import io.github.novacrypto.bip39.Validation.InvalidChecksumException;
+import io.github.novacrypto.bip39.Validation.InvalidWordCountException;
+import io.github.novacrypto.bip39.Validation.WordNotFoundException;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -9,39 +13,14 @@ import static io.github.novacrypto.bip39.MnemonicGeneration.firstByteOfSha256;
  * Created by aevans on 2017-10-08.
  */
 public final class MnemonicValidator {
-
-    private class Pair {
-        final char[] word;
-        final String string;
-        final int index;
-        final int length;
-
-        Pair(int i, char[] word, String string) {
-            this.word = word;
-            index = i;
-            length = findWordLength(word);
-            this.string = string;
-        }
-
-        private int findWordLength(char[] word) {
-            final int len = word.length;
-            for (int j = 0; j < len; j++) {
-                if (word[j] == '\0') {
-                    return j;
-                }
-            }
-            return len;
-        }
-    }
-
-    private final Pair[] words;
+    private final WordAndIndex[] words;
     private final char space;
 
     private MnemonicValidator(final WordList wordList) {
-        words = new Pair[1 << 11];
+        words = new WordAndIndex[1 << 11];
         for (int i = 0; i < 1 << 11; i++) {
             final String word = wordList.getWord(i);
-            words[i] = new Pair(i, word.toCharArray(), word);
+            words[i] = new WordAndIndex(i, word.toCharArray(), word);
         }
         space = wordList.getSpace();
         Arrays.sort(words, wordListSortOrder);
@@ -51,18 +30,21 @@ public final class MnemonicValidator {
         return new MnemonicValidator(wordList);
     }
 
-    public boolean validate(final CharSequence mnemonic) {
+    public void validate(final CharSequence mnemonic) throws
+            InvalidChecksumException,
+            InvalidWordCountException,
+            WordNotFoundException {
         final int[] wordIndexes = findWordIndexes(mnemonic);
         final int ms = wordIndexes.length;
 
         final int entPlusCs = ms * 11;
         final int ent = (entPlusCs * 32) / 33;
         final int cs = ent / 32;
-        // assertEquals(entPlusCs, ent + cs);
-        final int entropyWithCheckSumByteLength = entPlusCs / 8 + (entPlusCs % 8 > 0 ? 1 : 0);
-        final byte[] entropyWithChecksum = new byte[entropyWithCheckSumByteLength];
+        if (entPlusCs != ent + cs)
+            throw new InvalidWordCountException();
+        final byte[] entropyWithChecksum = new byte[(entPlusCs + 7) / 8];
 
-        wordIndexsToEntropyWithCheckSum(wordIndexes, entropyWithChecksum);
+        wordIndexesToEntropyWithCheckSum(wordIndexes, entropyWithChecksum);
 
         final byte[] entropy = Arrays.copyOf(entropyWithChecksum, entropyWithChecksum.length - 1);
         final byte lastByte = entropyWithChecksum[entropyWithChecksum.length - 1];
@@ -70,12 +52,13 @@ public final class MnemonicValidator {
 
         final byte sha = firstByteOfSha256(entropy);
 
-        final byte mask = (byte) ~((1 << (8 - cs)) - 1);
+        final byte mask = maskOfFirstNBits(cs);
 
-        return ((sha ^ lastByte) & mask) == 0;
+        if (((sha ^ lastByte) & mask) != 0)
+            throw new InvalidChecksumException();
     }
 
-    private int[] findWordIndexes(final CharSequence mnemonic) {
+    private int[] findWordIndexes(final CharSequence mnemonic) throws WordNotFoundException {
         final int ms = countSpaces(mnemonic) + 1;
         int w = 0;
         int bi = 0;
@@ -93,13 +76,13 @@ public final class MnemonicValidator {
             }
         }
         buffer[bi] = '\0';
-        result[w++] = findWordIndex(buffer);
+        result[w] = findWordIndex(buffer);
         Arrays.fill(buffer, '\0');
         return result;
     }
 
-    private int findWordIndex(char[] buffer) {
-        final Pair key = new Pair(-1, buffer, "");
+    private int findWordIndex(char[] buffer) throws WordNotFoundException {
+        final WordAndIndex key = new WordAndIndex(-1, buffer, "");
         final int index = Arrays.binarySearch(words, key, wordListSortOrder);
         if (index < 0) {
             final int insertionPoint = -index - 1;
@@ -121,15 +104,19 @@ public final class MnemonicValidator {
         return spaces;
     }
 
-    private void wordIndexsToEntropyWithCheckSum(int[] wordIndexes, byte[] entropyWithChecksum) {
+    private void wordIndexesToEntropyWithCheckSum(int[] wordIndexes, byte[] entropyWithChecksum) {
         for (int i = 0, bi = 0; i < wordIndexes.length; i++, bi += 11) {
             ByteUtils.writeNext11(entropyWithChecksum, wordIndexes[i], bi);
         }
     }
 
-    static final Comparator<Pair> wordListSortOrder = new Comparator<Pair>() {
+    private byte maskOfFirstNBits(int n) {
+        return (byte) ~((1 << (8 - n)) - 1);
+    }
+
+    static final Comparator<WordAndIndex> wordListSortOrder = new Comparator<WordAndIndex>() {
         @Override
-        public int compare(Pair o1, Pair o2) {
+        public int compare(WordAndIndex o1, WordAndIndex o2) {
             final char[] word1 = o1.word;
             final char[] word2 = o2.word;
             final int length1 = o1.length;
@@ -142,4 +129,29 @@ public final class MnemonicValidator {
             return Integer.compare(length1, length2);
         }
     };
+
+    private class WordAndIndex {
+        final char[] word;
+        final String string;
+        final int index;
+        final int length;
+
+        WordAndIndex(int i, char[] word, String string) {
+            this.word = word;
+            index = i;
+            length = findWordLength(word);
+            this.string = string;
+        }
+
+        private int findWordLength(char[] word) {
+            final int len = word.length;
+            for (int j = 0; j < len; j++) {
+                if (word[j] == '\0') {
+                    return j;
+                }
+            }
+            return len;
+        }
+    }
+
 }
