@@ -40,7 +40,7 @@ dependencies {
 Using a `StringBuilder`:
 
 ```
-StringBuffer sb = new StringBuffer();
+StringBuilder sb = new StringBuilder();
 byte[] entropy = new byte[128 / 8];
 new SecureRandom().nextBytes(entropy);
 new MnemonicGenerator(English.INSTANCE)
