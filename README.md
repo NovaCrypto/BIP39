@@ -6,6 +6,16 @@ Apart from generating a seed, only English, French and Japanese [currently packa
 
 # Install
 
+Use either of these repositories:
+
+```
+repositories {
+    jcenter()
+}
+```
+
+Or:
+
 ```
 repositories {
     maven {
@@ -13,8 +23,6 @@ repositories {
     }
 }
 ```
-
-`jcenter` coming soon.
 
 Add dependency:
 
