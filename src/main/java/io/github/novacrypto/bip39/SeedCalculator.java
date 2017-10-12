@@ -23,7 +23,6 @@ package io.github.novacrypto.bip39;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Arrays;
 
@@ -46,11 +45,9 @@ public final class SeedCalculator {
         Arrays.fill(chars, '\0');
         clear(salt);
 
-        try {
-            return toRuntime(() -> skf.generateSecret(spec).getEncoded());
-        } finally {
-            spec.clearPassword();
-        }
+        final byte[] encoded = toRuntime(() -> skf.generateSecret(spec)).getEncoded();
+        spec.clearPassword();
+        return encoded;
     }
 
     private static byte[] combine(byte[] array1, byte[] array2) {

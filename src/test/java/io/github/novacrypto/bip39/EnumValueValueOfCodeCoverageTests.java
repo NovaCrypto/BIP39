@@ -21,22 +21,24 @@
 
 package io.github.novacrypto.bip39;
 
+import io.github.novacrypto.bip39.wordlists.English;
+import io.github.novacrypto.bip39.wordlists.French;
+import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+public final class EnumValueValueOfCodeCoverageTests {
 
-public final class CharSequenceComparatorsTests {
-
-    @Test
-    public void values() {
-        CharSequenceComparators[] values = CharSequenceComparators.values();
-        assertEquals(1, values.length);
-        assertEquals(CharSequenceComparators.ALPHABETICAL, values[0]);
+    private static void superficialEnumCodeCoverage(Class<? extends Enum<?>> enumClass) throws Exception {
+        for (Object o : (Object[]) enumClass.getMethod("values").invoke(null)) {
+            enumClass.getMethod("valueOf", String.class).invoke(null, o.toString());
+        }
     }
 
     @Test
-    public void valueOfAlphabetical() {
-        CharSequenceComparators values = CharSequenceComparators.valueOf("ALPHABETICAL");
-        assertEquals(CharSequenceComparators.ALPHABETICAL, values);
+    public void forCodeCoverageOnly_allEnums() throws Exception {
+        superficialEnumCodeCoverage(English.class);
+        superficialEnumCodeCoverage(Japanese.class);
+        superficialEnumCodeCoverage(French.class);
+        superficialEnumCodeCoverage(CharSequenceComparators.class);
     }
 }
