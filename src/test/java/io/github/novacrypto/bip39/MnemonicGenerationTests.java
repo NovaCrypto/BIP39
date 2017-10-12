@@ -53,7 +53,6 @@ public final class MnemonicGenerationTests {
         assertThatThrownBy(
                 () -> createMnemonic(repeatString(30, "f"), English.INSTANCE))
                 .isInstanceOf(RuntimeException.class)
-                .
                 .hasMessage("Entropy too low, 128-256 bits allowed");
     }
 
