@@ -29,6 +29,7 @@ import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 
 public final class MnemonicGenerationTests {
@@ -47,34 +48,53 @@ public final class MnemonicGenerationTests {
         return sb.toString();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void tooSmallEntropy() throws Exception {
-        createMnemonic(repeatString(30, "f"), English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(repeatString(30, "f"), English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .
+                .hasMessage("Entropy too low, 128-256 bits allowed");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void tooSmallEntropyBytes() throws Exception {
-        createMnemonic(new byte[15], English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(new byte[15], English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Entropy too low, 128-256 bits allowed");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void tooLargeEntropy() throws Exception {
-        createMnemonic(repeatString(66, "f"), English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(repeatString(66, "f"), English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Entropy too high, 128-256 bits allowed");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void tooLargeEntropyBytes() throws Exception {
-        createMnemonic(new byte[33], English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(new byte[33], English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Entropy too high, 128-256 bits allowed");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void nonMultipleOf32() throws Exception {
-        createMnemonic(repeatString(34, "f"), English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(repeatString(34, "f"), English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Number of entropy bits must be divisible by 32");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void notHexPairs() throws Exception {
-        createMnemonic(repeatString(33, "f"), English.INSTANCE);
+        assertThatThrownBy(
+                () -> createMnemonic(repeatString(33, "f"), English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Length of hex chars must be divisible by 2");
     }
 
     @Test
@@ -122,26 +142,22 @@ public final class MnemonicGenerationTests {
                 createMnemonic(hex.toUpperCase(), English.INSTANCE));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void bad_hex_throws_g() throws Exception {
         final String hex = "0123456789abcdef0123456789abcdeg";
-        try {
-            createMnemonic(hex, English.INSTANCE);
-        } catch (final RuntimeException e) {
-            assertEquals("Invalid hex char 'g'", e.getMessage());
-            throw e;
-        }
+        assertThatThrownBy(
+                () -> createMnemonic(hex, English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Invalid hex char 'g'");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void bad_hex_throws_Z() throws Exception {
         final String hex = "0123456789abcdef0123456789abcdeZ";
-        try {
-            createMnemonic(hex, English.INSTANCE);
-        } catch (final RuntimeException e) {
-            assertEquals("Invalid hex char 'Z'", e.getMessage());
-            throw e;
-        }
+        assertThatThrownBy(
+                () -> createMnemonic(hex, English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Invalid hex char 'Z'");
     }
 
     private static String repeatString(int n, String repeat) {
