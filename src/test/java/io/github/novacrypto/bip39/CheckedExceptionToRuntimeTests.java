@@ -33,6 +33,11 @@ import static org.junit.Assert.assertEquals;
 public final class CheckedExceptionToRuntimeTests {
 
     @Test
+    public void forCodeCoverageOnly_create() {
+        new CheckedExceptionToRuntime();
+    }
+
+    @Test
     public void noException() {
         assertEquals("Hello",
                 toRuntime(() -> "Hello"));
