@@ -29,6 +29,11 @@ import static org.junit.Assert.assertEquals;
 public final class ByteUtilTests {
 
     @Test
+    public void forCodeCoverageOnly_create() {
+        new ByteUtils();
+    }
+
+    @Test
     public void take11Bits() {
         byte[] bytes = new byte[]{(byte) 0b11111111, (byte) 0b11101111, 0b01100111, 0};
         assertEquals(0b11111111111, next11Bits(bytes, 0));

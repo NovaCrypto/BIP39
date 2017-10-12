@@ -39,8 +39,9 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    testCompile 'junit:junit:4.11'
+    testCompile 'com.google.code.gson:gson:2.7'
+    testCompile 'org.assertj:assertj-core:3.8.0'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

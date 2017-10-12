@@ -22,10 +22,10 @@
 package io.github.novacrypto.bip39;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
+import static io.github.novacrypto.bip39.CheckedExceptionToRuntime.toRuntime;
 
 public final class MnemonicGenerator {
 
@@ -113,11 +113,7 @@ public final class MnemonicGenerator {
     }
 
     private static MessageDigest sha256() {
-        try {
-            return MessageDigest.getInstance("SHA-256");
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return toRuntime(() -> MessageDigest.getInstance("SHA-256"));
     }
 
     private static void entropyLengthPreChecks(final int ent) {

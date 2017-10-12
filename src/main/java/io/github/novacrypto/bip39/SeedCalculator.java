@@ -23,11 +23,10 @@ package io.github.novacrypto.bip39;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Arrays;
+
+import static io.github.novacrypto.bip39.CheckedExceptionToRuntime.toRuntime;
 
 public final class SeedCalculator {
 
@@ -46,13 +45,9 @@ public final class SeedCalculator {
         Arrays.fill(chars, '\0');
         clear(salt);
 
-        try {
-            return skf.generateSecret(spec).getEncoded();
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        } finally {
-            spec.clearPassword();
-        }
+        final byte[] encoded = toRuntime(() -> skf.generateSecret(spec)).getEncoded();
+        spec.clearPassword();
+        return encoded;
     }
 
     private static byte[] combine(byte[] array1, byte[] array2) {
@@ -67,18 +62,10 @@ public final class SeedCalculator {
     }
 
     private static SecretKeyFactory getPbkdf2WithHmacSHA512() {
-        try {
-            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return toRuntime(() -> SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512"));
     }
 
     private static byte[] getUtf8Bytes(final String string) {
-        try {
-            return string.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return toRuntime(() -> string.getBytes("UTF-8"));
     }
 }
