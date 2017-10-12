@@ -159,6 +159,26 @@ public final class MnemonicGenerationTests {
                 .hasMessage("Invalid hex char 'Z'");
     }
 
+    @Test
+    public void bad_hex_throws_space() throws Exception {
+        final String hex = "0123456789 abcdef0123456789abcde";
+        assertThatThrownBy(
+                () -> createMnemonic(hex, English.INSTANCE))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Invalid hex char ' '");
+    }
+
+    @Test
+    public void forFinallyCodeCoverage_createMnemonicWhenTargetThrowsException() throws Exception {
+        assertThatThrownBy(
+                () -> new MnemonicGenerator(English.INSTANCE)
+                        .createMnemonic(repeatString(32, "f"),
+                                (s) -> {
+                                    throw new OutOfMemoryError();
+                                }))
+                .isInstanceOf(OutOfMemoryError.class);
+    }
+
     private static String repeatString(int n, String repeat) {
         return new String(new char[n]).replace("\0", repeat);
     }
