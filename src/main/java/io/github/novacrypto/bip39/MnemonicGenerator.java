@@ -113,7 +113,12 @@ public final class MnemonicGenerator {
     }
 
     private static MessageDigest sha256() {
-        return toRuntime(() -> MessageDigest.getInstance("SHA-256"));
+        return toRuntime(new CheckedExceptionToRuntime.Func<MessageDigest>() {
+            @Override
+            public MessageDigest run() throws Exception {
+                return MessageDigest.getInstance("SHA-256");
+            }
+        });
     }
 
     private static void entropyLengthPreChecks(final int ent) {
