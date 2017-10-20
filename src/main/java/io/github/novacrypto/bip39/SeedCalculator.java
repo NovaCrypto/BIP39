@@ -21,6 +21,7 @@
 
 package io.github.novacrypto.bip39;
 
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.text.Normalizer;
@@ -45,7 +46,7 @@ public final class SeedCalculator {
         Arrays.fill(chars, '\0');
         clear(salt);
 
-        final byte[] encoded = toRuntime(() -> skf.generateSecret(spec)).getEncoded();
+        final byte[] encoded = generateSecretKey(spec).getEncoded();
         spec.clearPassword();
         return encoded;
     }
@@ -61,11 +62,30 @@ public final class SeedCalculator {
         Arrays.fill(salt, (byte) 0);
     }
 
+    private SecretKey generateSecretKey(final PBEKeySpec spec) {
+        return toRuntime(new CheckedExceptionToRuntime.Func<SecretKey>() {
+            @Override
+            public SecretKey run() throws Exception {
+                return skf.generateSecret(spec);
+            }
+        });
+    }
+
     private static SecretKeyFactory getPbkdf2WithHmacSHA512() {
-        return toRuntime(() -> SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512"));
+        return toRuntime(new CheckedExceptionToRuntime.Func<SecretKeyFactory>() {
+            @Override
+            public SecretKeyFactory run() throws Exception {
+                return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            }
+        });
     }
 
     private static byte[] getUtf8Bytes(final String string) {
-        return toRuntime(() -> string.getBytes("UTF-8"));
+        return toRuntime(new CheckedExceptionToRuntime.Func<byte[]>() {
+            @Override
+            public byte[] run() throws Exception {
+                return string.getBytes("UTF-8");
+            }
+        });
     }
 }

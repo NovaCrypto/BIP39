@@ -32,10 +32,12 @@ apply plugin: 'jacoco'
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
-repositories {
-    mavenCentral()
+compileJava {
+    sourceCompatibility = '1.7'
+    targetCompatibility = '1.7'
 }
 
 dependencies {
@@ -78,7 +80,7 @@ publishing {
 }
 
 // To upload a new version
-// ./gradlew build bintrayUpload -Puser=
+// ./gradlew clean
 // ./gradlew build bintrayUpload -Puser=user -Pkey=APIKEY
 bintray {
     user = project.ext.properties.user
