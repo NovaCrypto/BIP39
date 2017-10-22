@@ -21,11 +21,13 @@
 
 package io.github.novacrypto.bip39;
 
+import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
+
 import java.security.MessageDigest;
 import java.util.Arrays;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
-import static io.github.novacrypto.bip39.CheckedExceptionToRuntime.toRuntime;
+import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
 
 public final class MnemonicGenerator {
 

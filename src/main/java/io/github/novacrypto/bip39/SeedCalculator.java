@@ -21,13 +21,15 @@
 
 package io.github.novacrypto.bip39;
 
+import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.text.Normalizer;
 import java.util.Arrays;
 
-import static io.github.novacrypto.bip39.CheckedExceptionToRuntime.toRuntime;
+import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
 
 public final class SeedCalculator {
 

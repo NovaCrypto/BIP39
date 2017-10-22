@@ -31,6 +31,9 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 repositories {
+    maven {
+        url 'https://dl.bintray.com/novacrypto/General'
+    }
     jcenter()
     mavenCentral()
 }
@@ -41,6 +44,7 @@ compileJava {
 }
 
 dependencies {
+    compile 'io.github.novacrypto:ToRuntime:0.9.0@jar'
     testCompile 'junit:junit:4.11'
     testCompile 'com.google.code.gson:gson:2.7'
     testCompile 'org.assertj:assertj-core:3.8.0'
