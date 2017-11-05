@@ -19,22 +19,11 @@
  *  You can contact the authors via github issues.
  */
 
-package io.github.novacrypto.bip39;
+package io.github.novacrypto.testjson;
 
-public interface WordList {
-
-    /**
-     * Get a word in the word list.
-     *
-     * @param index Index of word in the word list [0..2047] inclusive.
-     * @return the word from the list.
-     */
-    String getWord(final int index);
-
-    /**
-     * Get the space character for this language.
-     *
-     * @return a whitespace character.
-     */
-    char getSpace();
+public final class TestVector {
+    public String mnemonic;
+    public String passphrase;
+    public String seed;
+    public String entropy;
 }

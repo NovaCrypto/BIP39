@@ -19,9 +19,9 @@
  *  You can contact the authors via github issues.
  */
 
-package io.github.novacrypto.bip39.testjson;
+package io.github.novacrypto.testjson;
 
-import io.github.novacrypto.bip39.Resources;
+import io.github.novacrypto.Resources;
 
 import static org.junit.Assert.assertEquals;
 

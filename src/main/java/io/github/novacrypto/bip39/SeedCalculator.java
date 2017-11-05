@@ -31,11 +31,25 @@ import java.util.Arrays;
 
 import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
 
+/**
+ * Contains function for generating seeds from a Mnemonic and Passphrase.
+ */
 public final class SeedCalculator {
 
     private final byte[] fixedSalt = getUtf8Bytes("mnemonic");
     private SecretKeyFactory skf = getPbkdf2WithHmacSHA512();
 
+    /**
+     * Calculate the seed given a mnemonic and corresponding passphrase.
+     * The phrase is not checked for validity here, for that use a {@link MnemonicValidator}.
+     * <p>
+     * Due to normalization, these need to be {@link String}, and not {@link CharSequence}, this is an open issue:
+     * https://github.com/NovaCrypto/BIP39/issues/7
+     *
+     * @param mnemonic   The memorable list of words
+     * @param passphrase An optional passphrase, use "" if not required
+     * @return a seed for HD wallet generation
+     */
     public byte[] calculateSeed(String mnemonic, String passphrase) {
         mnemonic = Normalizer.normalize(mnemonic, Normalizer.Form.NFKD);
         passphrase = Normalizer.normalize(passphrase, Normalizer.Form.NFKD);
@@ -53,7 +67,7 @@ public final class SeedCalculator {
         return encoded;
     }
 
-    private static byte[] combine(byte[] array1, byte[] array2) {
+    private static byte[] combine(final byte[] array1, final byte[] array2) {
         final byte[] bytes = new byte[array1.length + array2.length];
         System.arraycopy(array1, 0, bytes, 0, array1.length);
         System.arraycopy(array2, 0, bytes, array1.length, bytes.length - array1.length);
