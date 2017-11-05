@@ -84,7 +84,7 @@ dependencies {
 dependencyUpdates {
     outputFormatter = { result ->
         if (!result.outdated.dependencies.isEmpty()) {
-            throw new RuntimeException('Abort, there are dependencies to update.')
+            throw new GradleException('Abort, there are dependencies to update.')
         }
     }
 }
