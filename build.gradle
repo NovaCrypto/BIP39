@@ -79,8 +79,17 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.code.gson:gson:2.7'
     testCompile 'org.assertj:assertj-core:3.8.0'
-
 }
+
+dependencyUpdates {
+    outputFormatter = { result ->
+        if (!result.outdated.dependencies.isEmpty()) {
+            throw new RuntimeException('Abort, there are dependencies to update.')
+        }
+    }
+}
+
+bintrayUpload.dependsOn(dependencyUpdates)
 
 task(installSharedIdea, type: Copy) {
     description = "Copy the shared intellij files into local .idea/"
