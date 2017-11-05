@@ -19,28 +19,26 @@
  *  You can contact the authors via github issues.
  */
 
-package io.github.novacrypto.bip39;
+package io.github.novacrypto.testjson;
 
-import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import io.github.novacrypto.Resources;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
 
-public final class Resources {
+public final class TestVectorJson {
+    @SerializedName("data")
+    public TestVector[] vectors;
 
-    private Resources() {
+    public static TestVectorJson loadJapanese() {
+        final TestVectorJson data = Resources.loadJsonResource("bip39_japanese_test_vectors.json", TestVectorJson.class);
+        assertEquals(24, data.vectors.length);
+        return data;
     }
 
-    public static <T> T loadJsonResource(String resourceName, Class<T> classOfT) {
-        try {
-            try (final InputStreamReader in = new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(resourceName))) {
-                final String json = new BufferedReader(in).lines().collect(Collectors.joining("\n"));
-                return new Gson().fromJson(json, classOfT);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static TestVectorJson loadFrench() {
+        final TestVectorJson data = Resources.loadJsonResource("bip39_french_test_vectors.json", TestVectorJson.class);
+        assertEquals(18, data.vectors.length);
+        return data;
     }
 }

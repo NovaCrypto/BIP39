@@ -19,11 +19,12 @@
  *  You can contact the authors via github issues.
  */
 
-package io.github.novacrypto.bip39;
+package io.github.novacrypto;
 
-import io.github.novacrypto.bip39.testjson.EnglishJson;
-import io.github.novacrypto.bip39.testjson.TestVectorJson;
-import io.github.novacrypto.bip39.testjson.TestVector;
+import io.github.novacrypto.bip39.SeedCalculator;
+import io.github.novacrypto.testjson.EnglishJson;
+import io.github.novacrypto.testjson.TestVectorJson;
+import io.github.novacrypto.testjson.TestVector;
 import org.junit.Test;
 
 import java.math.BigInteger;

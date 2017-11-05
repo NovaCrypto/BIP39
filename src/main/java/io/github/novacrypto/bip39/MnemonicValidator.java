@@ -31,9 +31,12 @@ import java.util.List;
 
 import static io.github.novacrypto.bip39.MnemonicGenerator.firstByteOfSha256;
 
+/**
+ * Contains function for validating Mnemonics against the BIP0039 spec.
+ */
 public final class MnemonicValidator {
     private final WordAndIndex[] words;
-    final CharSequenceSplitter charSequenceSplitter;
+    private final CharSequenceSplitter charSequenceSplitter;
 
     private MnemonicValidator(final WordList wordList) {
         words = new WordAndIndex[1 << 11];
@@ -45,10 +48,25 @@ public final class MnemonicValidator {
         Arrays.sort(words, wordListSortOrder);
     }
 
-    public static MnemonicValidator ofWordList(WordList wordList) {
+    /**
+     * Get a Mnemonic validator for the given word list.
+     * No normalization is currently performed, this is an open issue: https://github.com/NovaCrypto/BIP39/issues/13
+     *
+     * @param wordList A WordList implementation
+     * @return A validator
+     */
+    public static MnemonicValidator ofWordList(final WordList wordList) {
         return new MnemonicValidator(wordList);
     }
 
+    /**
+     * Check that the supplied mnemonic fits the BIP0039 spec.
+     *
+     * @param mnemonic The memorable list of words
+     * @throws InvalidChecksumException  If the last bytes don't match the expected last bytes
+     * @throws InvalidWordCountException If the number of words is not a multiple of 3, 24 or fewer
+     * @throws WordNotFoundException     If a word in the mnemonic is not present in the word list
+     */
     public void validate(final CharSequence mnemonic) throws
             InvalidChecksumException,
             InvalidWordCountException,
@@ -101,17 +119,17 @@ public final class MnemonicValidator {
         return words[index].index;
     }
 
-    private void wordIndexesToEntropyWithCheckSum(int[] wordIndexes, byte[] entropyWithChecksum) {
+    private static void wordIndexesToEntropyWithCheckSum(int[] wordIndexes, byte[] entropyWithChecksum) {
         for (int i = 0, bi = 0; i < wordIndexes.length; i++, bi += 11) {
             ByteUtils.writeNext11(entropyWithChecksum, wordIndexes[i], bi);
         }
     }
 
-    private byte maskOfFirstNBits(int n) {
+    private static byte maskOfFirstNBits(int n) {
         return (byte) ~((1 << (8 - n)) - 1);
     }
 
-    static final Comparator<WordAndIndex> wordListSortOrder = new Comparator<WordAndIndex>() {
+    private static final Comparator<WordAndIndex> wordListSortOrder = new Comparator<WordAndIndex>() {
         @Override
         public int compare(WordAndIndex o1, WordAndIndex o2) {
             return CharSequenceComparators.ALPHABETICAL.compare(o1.word, o2.word);

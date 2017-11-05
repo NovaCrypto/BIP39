@@ -21,19 +21,24 @@
 
 package io.github.novacrypto.bip39;
 
-import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
-
-import java.security.MessageDigest;
 import java.util.Arrays;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
-import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
+import static io.github.novacrypto.hashing.Sha256.sha256;
 
+/**
+ * Generates mnemonics from entropy.
+ */
 public final class MnemonicGenerator {
 
     private final WordList wordList;
 
-    public MnemonicGenerator(WordList wordList) {
+    /**
+     * Create a generator using the given word list.
+     *
+     * @param wordList A known ordered list of 2048 words to select from.
+     */
+    public MnemonicGenerator(final WordList wordList) {
         this.wordList = wordList;
     }
 
@@ -42,6 +47,8 @@ public final class MnemonicGenerator {
     }
 
     /**
+     * Create a mnemonic from the word list given the entropy.
+     *
      * @param entropyHex 128-256 bits of hex entropy, number of bits must also be divisible by 32
      * @param target     Where to write the mnemonic to
      */
@@ -63,6 +70,8 @@ public final class MnemonicGenerator {
     }
 
     /**
+     * Create a mnemonic from the word list given the entropy.
+     *
      * @param entropy 128-256 bits of hex entropy, number of bits must also be divisible by 32
      * @param target  Where to write the mnemonic to
      */
@@ -108,19 +117,10 @@ public final class MnemonicGenerator {
     }
 
     static byte firstByteOfSha256(final byte[] entropy) {
-        final byte[] hash = sha256().digest(entropy);
+        final byte[] hash = sha256(entropy);
         final byte firstByte = hash[0];
         Arrays.fill(hash, (byte) 0);
         return firstByte;
-    }
-
-    private static MessageDigest sha256() {
-        return toRuntime(new CheckedExceptionToRuntime.Func<MessageDigest>() {
-            @Override
-            public MessageDigest run() throws Exception {
-                return MessageDigest.getInstance("SHA-256");
-            }
-        });
     }
 
     private static void entropyLengthPreChecks(final int ent) {
