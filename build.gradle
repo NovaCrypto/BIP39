@@ -77,10 +77,19 @@ dependencies {
     compile 'io.github.novacrypto:SHA256:0.0.1@jar'
     compile 'io.github.novacrypto:ToRuntime:0.9.0@jar'
     testCompile 'junit:junit:4.12'
-    testCompile 'com.google.code.gson:gson:2.7'
+    testCompile 'com.google.code.gson:gson:2.8.2'
     testCompile 'org.assertj:assertj-core:3.8.0'
-
 }
+
+dependencyUpdates {
+    outputFormatter = { result ->
+        if (!result.outdated.dependencies.isEmpty()) {
+            throw new GradleException('Abort, there are dependencies to update.')
+        }
+    }
+}
+
+bintrayUpload.dependsOn(dependencyUpdates)
 
 task(installSharedIdea, type: Copy) {
     description = "Copy the shared intellij files into local .idea/"
