@@ -48,7 +48,7 @@ bintray {
     publications = ['MyPublication']
     pkg {
         repo = 'BIP'
-        name = project.name
+        name = 'BIP39'
         userOrg = 'novacrypto'
         licenses = ['GPL-3.0']
         vcsUrl = "https://github.com/NovaCrypto/${project.name}.git"
