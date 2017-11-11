@@ -46,7 +46,7 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             groupId group
-            artifactId project.name
+            artifactId 'BIP39'
             version project.version
         }
     }

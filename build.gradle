@@ -30,6 +30,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+
 apply from: 'bintray.gradle'
 
 // Generate a dependency version update report for release
@@ -38,7 +39,7 @@ apply from: 'bintray.gradle'
 apply plugin: 'com.github.ben-manes.versions'
 
 group 'io.github.novacrypto'
-version '0.1.3'
+version '0.1.5'
 
 // To upload a new version
 // ./gradlew clean build bintrayUpload -Puser=user -Pkey=APIKEY
@@ -51,7 +52,7 @@ bintray {
         name = 'BIP39'
         userOrg = 'novacrypto'
         licenses = ['GPL-3.0']
-        vcsUrl = "https://github.com/NovaCrypto/${project.name}.git"
+        vcsUrl = "https://github.com/NovaCrypto/BIP32.git"
         version {
             name = project.version
         }
@@ -91,7 +92,7 @@ dependencyUpdates {
 
 bintrayUpload.dependsOn(dependencyUpdates)
 
-task(installSharedIdea, type: Copy) {
+task('installSharedIdea', type: Copy) {
     description = "Copy the shared intellij files into local .idea/"
     from 'ideaShared/'
     into '.idea/'
