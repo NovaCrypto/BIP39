@@ -72,7 +72,7 @@ public final class MnemonicGenerator {
     /**
      * Create a mnemonic from the word list given the entropy.
      *
-     * @param entropy 128-256 bits of hex entropy, number of bits must also be divisible by 32
+     * @param entropy 128-256 bits of entropy, number of bits must also be divisible by 32
      * @param target  Where to write the mnemonic to
      */
     public void createMnemonic(

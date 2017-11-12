@@ -42,7 +42,7 @@ public final class SeedCalculator {
 
     /**
      * Creates a seed calculator using {@link SpongyCastlePBKDF2WithHmacSHA256} which is the most compatible.
-     * Use {@link SeedCalculator(PBKDF2WithHmacSHA256)} to supply another.
+     * Use {@link SeedCalculator#SeedCalculator(PBKDF2WithHmacSHA256)} to supply another.
      */
     public SeedCalculator() {
         this(SpongyCastlePBKDF2WithHmacSHA256.INSTANCE);
