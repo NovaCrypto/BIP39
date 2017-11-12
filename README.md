@@ -28,7 +28,7 @@ Add dependency:
 
 ```
 dependencies {
-    compile 'io.github.novacrypto:BIP39:0.1.5'
+    compile 'io.github.novacrypto:BIP39:0.1.6'
 }
 
 ```
@@ -41,7 +41,7 @@ Using a `StringBuilder`:
 
 ```
 StringBuilder sb = new StringBuilder();
-byte[] entropy = new byte[128 / 8];
+byte[] entropy = new byte[Words.TWELVE.byteLength()];
 new SecureRandom().nextBytes(entropy);
 new MnemonicGenerator(English.INSTANCE)
     .createMnemonic(entropy, sb::append);
@@ -52,7 +52,7 @@ If you're paranoid and/or need higher than normal [memory security](https://medi
 
 ```
 try (SecureCharBuffer secure = new SecureCharBuffer()) {
-    final byte[] entropy = new byte[128 / 8];
+    byte[] entropy = new byte[Words.TWELVE.byteLength()];
     new SecureRandom().nextBytes(entropy);
     new MnemonicGenerator(English.INSTANCE)
         .createMnemonic(entropy, secure::append);

@@ -42,5 +42,6 @@ public final class EnumValueValueOfCodeCoverageTests {
         superficialEnumCodeCoverage(CharSequenceComparators.class);
         superficialEnumCodeCoverage(SpongyCastlePBKDF2WithHmacSHA256.class);
         superficialEnumCodeCoverage(JavaxPBKDF2WithHmacSHA256.class);
+        superficialEnumCodeCoverage(Words.class);
     }
 }
