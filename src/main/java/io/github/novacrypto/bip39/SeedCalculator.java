@@ -23,9 +23,6 @@ package io.github.novacrypto.bip39;
 
 import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
 
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.text.Normalizer;
 import java.util.Arrays;
 
@@ -37,7 +34,19 @@ import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime
 public final class SeedCalculator {
 
     private final byte[] fixedSalt = getUtf8Bytes("mnemonic");
-    private SecretKeyFactory skf = getPbkdf2WithHmacSHA512();
+    private final PBKDF2WithHmacSHA256 hashAlgorithm;
+
+    public SeedCalculator(PBKDF2WithHmacSHA256 hashAlgorithm) {
+        this.hashAlgorithm = hashAlgorithm;
+    }
+
+    /**
+     * Creates a seed calculator using {@link SpongyCastlePBKDF2WithHmacSHA256} which is the most compatible.
+     * Use {@link SeedCalculator(PBKDF2WithHmacSHA256)} to supply another.
+     */
+    public SeedCalculator() {
+        this(SpongyCastlePBKDF2WithHmacSHA256.INSTANCE);
+    }
 
     /**
      * Calculate the seed given a mnemonic and corresponding passphrase.
@@ -58,12 +67,10 @@ public final class SeedCalculator {
         final byte[] salt2 = getUtf8Bytes(passphrase);
         final byte[] salt = combine(fixedSalt, salt2);
         clear(salt2);
-        final PBEKeySpec spec = new PBEKeySpec(chars, salt, 2048, 512);
+        final byte[] encoded = hash(chars, salt);
         Arrays.fill(chars, '\0');
         clear(salt);
 
-        final byte[] encoded = generateSecretKey(spec).getEncoded();
-        spec.clearPassword();
         return encoded;
     }
 
@@ -78,22 +85,8 @@ public final class SeedCalculator {
         Arrays.fill(salt, (byte) 0);
     }
 
-    private SecretKey generateSecretKey(final PBEKeySpec spec) {
-        return toRuntime(new CheckedExceptionToRuntime.Func<SecretKey>() {
-            @Override
-            public SecretKey run() throws Exception {
-                return skf.generateSecret(spec);
-            }
-        });
-    }
-
-    private static SecretKeyFactory getPbkdf2WithHmacSHA512() {
-        return toRuntime(new CheckedExceptionToRuntime.Func<SecretKeyFactory>() {
-            @Override
-            public SecretKeyFactory run() throws Exception {
-                return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            }
-        });
+    private byte[] hash(char[] chars, byte[] salt) {
+        return hashAlgorithm.hash(chars, salt);
     }
 
     private static byte[] getUtf8Bytes(final String string) {

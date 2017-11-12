@@ -21,10 +21,11 @@
 
 package io.github.novacrypto;
 
+import io.github.novacrypto.bip39.JavaxPBKDF2WithHmacSHA256;
 import io.github.novacrypto.bip39.SeedCalculator;
 import io.github.novacrypto.testjson.EnglishJson;
-import io.github.novacrypto.testjson.TestVectorJson;
 import io.github.novacrypto.testjson.TestVector;
+import io.github.novacrypto.testjson.TestVectorJson;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -80,8 +81,14 @@ public final class SeedCalculationTests {
     }
 
     private static String calculateSeedHex(String mnemonic, String passphrase) {
-        return toHex(new SeedCalculator()
-                .calculateSeed(mnemonic, passphrase));
+        final String seed1 = calculateSeed(mnemonic, passphrase, new SeedCalculator());
+        final String seed2 = calculateSeed(mnemonic, passphrase, new SeedCalculator(JavaxPBKDF2WithHmacSHA256.INSTANCE));
+        assertEquals(seed1, seed2);
+        return seed1;
+    }
+
+    private static String calculateSeed(String mnemonic, String passphrase, SeedCalculator seedCalculator) {
+        return toHex(seedCalculator.calculateSeed(mnemonic, passphrase));
     }
 
     private static String toHex(byte[] array) {
