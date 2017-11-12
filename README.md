@@ -86,3 +86,12 @@ As does not use a word list, can be used now for any language.
 ```
 byte[] seed = new SeedCalculator().calculateSeed(mnemonic, passphrase);
 ```
+
+That uses SpongyCastle, if you don't need or want that dependency, you can use `javax.crypto` like so:
+
+```
+byte[] seed = new SeedCalculator(JavaxPBKDF2WithHmacSHA256.INSTANCE).calculateSeed(mnemonic, passphrase);
+```
+
+That will not work on Android API < 26 https://developer.android.com/reference/javax/crypto/SecretKeyFactory.html and see Issue #17.
+
