@@ -41,4 +41,10 @@ public final class TestVectorJson {
         assertEquals(18, data.vectors.length);
         return data;
     }
+
+    public static TestVectorJson loadSpanish() {
+        final TestVectorJson data = Resources.loadJsonResource("bip39_spanish_test_vectors.json", TestVectorJson.class);
+        assertEquals(18, data.vectors.length);
+        return data;
+    }
 }

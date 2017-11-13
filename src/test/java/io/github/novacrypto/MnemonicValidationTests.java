@@ -30,6 +30,7 @@ import io.github.novacrypto.bip39.WordList;
 import io.github.novacrypto.bip39.wordlists.English;
 import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
+import io.github.novacrypto.bip39.wordlists.Spanish;
 import io.github.novacrypto.testjson.EnglishJson;
 import io.github.novacrypto.testjson.TestVector;
 import io.github.novacrypto.testjson.TestVectorJson;
@@ -235,6 +236,14 @@ public final class MnemonicValidationTests {
         final TestVectorJson data = TestVectorJson.loadFrench();
         for (final TestVector testVector : data.vectors) {
             assertTrue(validate(testVector.mnemonic, French.INSTANCE));
+        }
+    }
+
+    @Test
+    public void all_spanish_test_vectors() throws Exception {
+        final TestVectorJson data = TestVectorJson.loadSpanish();
+        for (final TestVector testVector : data.vectors) {
+            assertTrue(validate(testVector.mnemonic, Spanish.INSTANCE));
         }
     }
 
