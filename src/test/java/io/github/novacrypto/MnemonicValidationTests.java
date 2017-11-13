@@ -24,18 +24,20 @@ package io.github.novacrypto;
 import io.github.novacrypto.bip39.MnemonicValidator;
 import io.github.novacrypto.bip39.Validation.InvalidChecksumException;
 import io.github.novacrypto.bip39.Validation.InvalidWordCountException;
+import io.github.novacrypto.bip39.Validation.UnexpectedWhiteSpaceException;
 import io.github.novacrypto.bip39.Validation.WordNotFoundException;
 import io.github.novacrypto.bip39.WordList;
-import io.github.novacrypto.testjson.EnglishJson;
-import io.github.novacrypto.testjson.TestVector;
-import io.github.novacrypto.testjson.TestVectorJson;
 import io.github.novacrypto.bip39.wordlists.English;
 import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
+import io.github.novacrypto.testjson.EnglishJson;
+import io.github.novacrypto.testjson.TestVector;
+import io.github.novacrypto.testjson.TestVectorJson;
 import org.junit.Test;
 
 import java.util.StringJoiner;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 
 public final class MnemonicValidationTests {
@@ -99,11 +101,25 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_japanese_word() throws Exception {
         try {
+            validate("そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
+                    Japanese.INSTANCE);
+        } catch (WordNotFoundException e) {
+            assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
+            assertEquals("れきだ", e.getWord());
+            assertEquals("れきし", e.getSuggestion1());
+            assertEquals("れきだい", e.getSuggestion2());
+            throw e;
+        }
+    }
+
+    @Test(expected = WordNotFoundException.class)
+    public void bad_japanese_word_normalized_behaviour() throws Exception {
+        try {
             validate("そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
                     Japanese.INSTANCE);
         } catch (WordNotFoundException e) {
-            assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
-            assertEquals("れきだ", e.getWord());
+            assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
+            assertEquals("れきだ", e.getWord());
             assertEquals("れきし", e.getSuggestion1());
             assertEquals("れきだい", e.getSuggestion2());
             throw e;
@@ -127,6 +143,11 @@ public final class MnemonicValidationTests {
     }
 
     @Test
+    public void UnexpectedWhiteSpaceException_message() throws Exception {
+        assertEquals("Unexpected whitespace", new UnexpectedWhiteSpaceException().getMessage());
+    }
+
+    @Test
     public void all_english_test_vectors() throws Exception {
         final EnglishJson data = EnglishJson.load();
         for (final String[] testCase : data.english) {
@@ -145,6 +166,48 @@ public final class MnemonicValidationTests {
             testCaseCount++;
         }
         assertEquals(18, testCaseCount);
+    }
+
+    @Test
+    public void additional_space_end_English() {
+        assertThatThrownBy(() ->
+                validate("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about ",
+                        English.INSTANCE)
+        ).isInstanceOf(UnexpectedWhiteSpaceException.class);
+    }
+
+    @Test
+    public void additional_space_start_English() {
+        assertThatThrownBy(() ->
+                validate(" abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+                        English.INSTANCE)
+        ).isInstanceOf(UnexpectedWhiteSpaceException.class);
+    }
+
+    @Test
+    public void additional_space_middle_English() {
+        assertThatThrownBy(() ->
+                validate("abandon  abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+                        English.INSTANCE)
+        ).isInstanceOf(UnexpectedWhiteSpaceException.class);
+    }
+
+    @Test
+    public void normalize_Japanese() throws Exception {
+        assertTrue(validate("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら",
+                Japanese.INSTANCE));
+    }
+
+    @Test
+    public void normalize_Japanese_2() throws Exception {
+        assertTrue(validate("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら",
+                Japanese.INSTANCE));
+    }
+
+    @Test
+    public void normalize_Japanese_regular_spaces() throws Exception {
+        assertTrue(validate("あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あおぞら",
+                Japanese.INSTANCE));
     }
 
     private static String swapWords(String mnemonic, int index1, int index2, WordList wordList) {
@@ -188,7 +251,10 @@ public final class MnemonicValidationTests {
         assertEquals(18, testCaseCount);
     }
 
-    private boolean validate(String mnemonic, WordList wordList) throws InvalidWordCountException, WordNotFoundException {
+    private static boolean validate(String mnemonic, WordList wordList) throws
+            InvalidWordCountException,
+            WordNotFoundException,
+            UnexpectedWhiteSpaceException {
         try {
             MnemonicValidator
                     .ofWordList(wordList)

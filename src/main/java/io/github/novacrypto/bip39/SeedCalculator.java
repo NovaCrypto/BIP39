@@ -26,6 +26,7 @@ import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
 import java.text.Normalizer;
 import java.util.Arrays;
 
+import static io.github.novacrypto.bip39.Normalization.normalizeNFKD;
 import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
 
 /**
@@ -60,8 +61,8 @@ public final class SeedCalculator {
      * @return a seed for HD wallet generation
      */
     public byte[] calculateSeed(String mnemonic, String passphrase) {
-        mnemonic = Normalizer.normalize(mnemonic, Normalizer.Form.NFKD);
-        passphrase = Normalizer.normalize(passphrase, Normalizer.Form.NFKD);
+        mnemonic = normalizeNFKD(mnemonic);
+        passphrase = normalizeNFKD(passphrase);
 
         final char[] chars = mnemonic.toCharArray();
         final byte[] salt2 = getUtf8Bytes(passphrase);
