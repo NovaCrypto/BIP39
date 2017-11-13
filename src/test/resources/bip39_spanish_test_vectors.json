@@ -1,0 +1,131 @@
+{
+  "source": "https://iancoleman.github.io/bip39/#french",
+  "data": [
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "ligero vista talar yogur venta queso yacer trozo ligero vista talar zafiro",
+      "passphrase": "TREZOR",
+      "seed": "1580aa5d5d67057b3a0a12253c283b93921851555529d0bbe9634349d641029216f791ddce3527819d44d833a0df3500b15fd8ba4cae7ca24e1464b9167de633",
+      "bip32_xprv": "xprv9s21ZrQH143K27g7EMkgY2F1fuyqSEKq6n1iJCHuiUX5F3oGESmJSS6DcKW5JZ6qWWJ7x8wS1FCrd1NhRS4xCWDn9Bb1HzBuNpitD7FeYGv"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffff",
+      "mnemonic": "zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo yodo",
+      "passphrase": "TREZOR",
+      "seed": "a9d1f751178872cc53fc5433e9b2a97526448adc4b824cedeadd8a127c2416481345dfbef2bfc78275f3498e40b4e8e2e00560100e543aba3f324e752f032bc9",
+      "bip32_xprv": "xprv9s21ZrQH143K4TU3oETVCyPLTqmC8C7zqqSR7L8JpMiR68YNhyvfEmXpRh6pP8gPghpFbvNSQCQppPDf55iNnZhT9iza6HRpTvKeLSDNFCg"
+    },
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "ligero vista talar yogur venta queso yacer trozo ligero vista talar yogur venta queso yacer trozo ligero violín",
+      "passphrase": "TREZOR",
+      "seed": "f73b28d7e180e0a92c57276a29489c10a992c8a465ab61be0ade4708543436a682b2a3c22de57c48736ae6f29bebf3e506779c74bc1a835ad6b9f4e174126ca8",
+      "bip32_xprv": "xprv9s21ZrQH143K4PEMCi1dMq3ZwveC5um6cXR3tp4Z6LUGLhz4pmkaDU44UoSTiMQHv5icYPjH5EooZNorbDB7fLMDa531HHrKKnEEqCT5Tfs"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffffffffffffffffffff",
+      "mnemonic": "zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo viejo",
+      "passphrase": "TREZOR",
+      "seed": "2fd3964ac77c52232dc0eb2ab237fea2de9b7509005214101ecbbaeb40f34bce7735e848fca6339f76f289904c6db959fa573fc0aa607d969ac256693b4fb7af",
+      "bip32_xprv": "xprv9s21ZrQH143K3zwjASrAazc9EGeoVcQXA3unTmgxG9ZS7nc75inZw19oktj1y3n2Y7yetBatSN3v2UpS9ms3PvmrgQEMC4jox4ZV1ZrW6Qz"
+    },
+    {
+      "entropy": "7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
+      "mnemonic": "ligero vista talar yogur venta queso yacer trozo ligero vista talar yogur venta queso yacer trozo ligero vista talar yogur venta queso yacer teatro",
+      "passphrase": "TREZOR",
+      "seed": "3d2a3aec779195f2628e800879d600cfaf2d7fcfa998657068db53906a00608fcc94fc78ceab8c97d6191389c4e468815ea0d11ffa4280c34c3cf17721a27c73",
+      "bip32_xprv": "xprv9s21ZrQH143K2WBRPum95TFxfz8niK5sbiDpQjyr915SjEJc99BrYoRhPuYvfzFhPwqUNAFtEdw4khqQMK4ge8EnTZZASbv7oy8t6SMzVSM"
+    },
+    {
+      "entropy": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "mnemonic": "zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo zurdo varón",
+      "passphrase": "TREZOR",
+      "seed": "deea21c6902df5ef4a8efab8e14de53004c68817ea3de421cdd184f4159a6e9947376ed794c3ce67534f37f80b46674e85335555b5c53f44fdfef27991fedc0e",
+      "bip32_xprv": "xprv9s21ZrQH143K4TyBobPSoDLEze5gKjiTZXzaJaND1QHqmrnx6kULMJhGvQkraSHgUsjmisepryPQqTfWyM3ETLjusTsW35KumQ3w3RyusSM"
+    },
+    {
+      "entropy": "77c2b00716cec7213839159e404db50d",
+      "mnemonic": "jungla asumir acción cedro tóxico mismo tapa brisa obispo ácido hombre baño",
+      "passphrase": "TREZOR",
+      "seed": "338e1ee586e109e80a53af2294bca03f4a5a7e9d089f04d1f02b30dde370c8ae4268a37909bd278c21e29fc24e2a3f30104eb8dd153192eda5646415dbc21fc0",
+      "bip32_xprv": "xprv9s21ZrQH143K2x4M1WPDA2xUXubnVRGrrNrVvFasrcQBF2hVJVbhK8bT9BgugRsj5Pn6tiggNtUoxM7uFvTobSLmCavLfbedssaKZQxKqMU"
+    },
+    {
+      "entropy": "b63a9c59a6e641f288ebc103017f1da9f8290b3da6bdef7b",
+      "mnemonic": "pleito semana ático ensayo giro viaje buceo júpiter activo amigo repetir fábula llover madera veinte siete trompa soplar",
+      "passphrase": "TREZOR",
+      "seed": "12e9454bfe0cb26cb91db194f7be1297ea0f0ff07038f9f70fc3364a85f4196991b01c7ec84ebc91f0611597c8b346cd20e2623ce8c0af8e4040cf7bc05f2218",
+      "bip32_xprv": "xprv9s21ZrQH143K2PzJFum2Ei6JvNjYzj535XbrbTCbsbpbVWq5Vh78iZN2cWkYqqBaUtbkX8uiXbtdpzdRpJujb2TKuW7EP8KKWRmx1NBaaeE"
+    },
+    {
+      "entropy": "3e141609b97933b66a060dcddc71fad1d91677db872031e85f4c015c5e7e8982",
+      "mnemonic": "cúpula odiar llorar inicio moreno sopa ozono rápido rotar tejer libro opción moho cubrir horno tema cigarro diadema sardina acné relato dátil cacao espejo",
+      "passphrase": "TREZOR",
+      "seed": "acb2b4e604937ce8bbd1048577fc9cc4f864551d28772f572068b6749ddbd38a9afcb189a62453ceae15542cc1af7e9e5372e62d113a6db88d5250ab6afce4f1",
+      "bip32_xprv": "xprv9s21ZrQH143K4PTThgM38jX2WphKQQx8QK6w3HvZ6dcrFGHwn3pUqpH4ELpEDevUZN7Jnd9ujEyWLuZeniohRsLGQzTdBjrQaEL8oUsaQhB"
+    },
+    {
+      "entropy": "0460ef47585604c5660618db2e6a7e7f",
+      "mnemonic": "aduana ajuste samba perder gafas gen natal rebote sopa innato ochenta zafiro",
+      "passphrase": "TREZOR",
+      "seed": "fbeec9484d0ba972601190f2201049c522c1b24b8a3584478f2ca11dd58683c232241df21dca593f0beb1c9842323f81c9fd53d19d9af1be7686424c746711b6",
+      "bip32_xprv": "xprv9s21ZrQH143K2za5f2wdZoSm6ywEdgfNuTWFkg95ULZnzb5MXdnnP1uiJcXQJNec9rdgx1g7gQMAxdb1yf1haoU3F5tXGTJa4XmbwbGpoT7"
+    },
+    {
+      "entropy": "72f60ebac5dd8add8d2a25a797102c3ce21bc029c200076f",
+      "mnemonic": "inicio pera pelar medio simio hueso cocina directo óvulo pompa amante lágrima bóveda talento ostra defensa ajuste lienzo",
+      "passphrase": "TREZOR",
+      "seed": "26ec835839a0556796cb2f483ea6965cfa845a059867df950a8314d0d7edca4eacb1076e4aa7977d321ae90da1a29893c2025e2f585d4839637fefed3abc1f26",
+      "bip32_xprv": "xprv9s21ZrQH143K3a26sVzhsQKqLwrEATUBs6mJFzPdaXeHnijK5EdmCBGmZATF8mwS5vz2PMXbQ83e39Ynj1EE7yusoS8ySbkdSiP3v2b6gG5"
+    },
+    {
+      "entropy": "2c85efc7f24ee4573d2b81a6ec66cee209b2dcbd09d8eddc51e0215b0b68e416",
+      "mnemonic": "castor cetro úlcera tender tren carne vaina icono oso geranio piloto red nivel hoyo vacío croqueta trazar tauro juntar día perder piojo miseria sur",
+      "passphrase": "TREZOR",
+      "seed": "e030c576214c756d847e79429be634d2054cb489f37f01d892a7393cc368927bd6af4203c96aa34e237fcb96365b7d4ed02e20c518818a12944efde5fc6e6ea4",
+      "bip32_xprv": "xprv9s21ZrQH143K2jx39oUuMtyGwWuzAjpbto1Bdp7PKYpuk98XkhhtbFZVZfPvBYyJktNT3xPCmccD9uJ6TJEryHpVtFa2hmj2WeAhuMyVXv3"
+    },
+    {
+      "entropy": "eaebabb2383351fd31d703840b32e9e2",
+      "mnemonic": "tórax fracaso trabajo idioma codo yeso reparto tamaño lucha fila prensa rehén",
+      "passphrase": "TREZOR",
+      "seed": "a5083e544700dc9933be40a727afdd373a4e417b4ec97b1382c2758836320a8b3d16d06a4d649d8173544867bb59cd89528024a14aac0a40dc6026502bd96020",
+      "bip32_xprv": "xprv9s21ZrQH143K4ZKxR9pRMZ1kySME5N9QQp3hXX6Fu4C7xbAJH5y5xNmMLEn9PUJjxD2hsMHa4bjUcJuBCwWpD7pKKTnQnyLKcfgUfftFRED"
+    },
+    {
+      "entropy": "7ac45cfe7722ee6c7ba84fbc2d5bd61b45cb2fe5eb65aa78",
+      "mnemonic": "langosta broma débil tren cero colgar tribu almíbar prole hebra vampiro colmo forro nasal nariz historia pañuelo recaer",
+      "passphrase": "TREZOR",
+      "seed": "be98fe494599826bd0056d02596eccee914ead5b8bd6387920663e813d3965ae1d9f0ca0c2eba3f888a2ddd41736cb2dc25ea5ee625e09b69e067edc2a0729fb",
+      "bip32_xprv": "xprv9s21ZrQH143K34DKqaMXeDBNpVyjXY8hG6Ze2y9dU84LqahdmsiNQrfcnG84Ss993d9dJ5abZxhyDS2ciiUDQkqYGGvBjSQCERkcNfCUswM"
+    },
+    {
+      "entropy": "4fa1a8bc3e6d80ee1316050e862c1812031493212b7ec3f3bb1b08f168cabeef",
+      "mnemonic": "esfera ángulo cerrar leer sílaba juez encargo ración anuncio cielo agrio buey ciego educar lunes hundir recurso número remo área atleta gorila visor tenso",
+      "passphrase": "TREZOR",
+      "seed": "337858f949a2f0fe56c0d9995c768af0237036751e2b7b09e9c60a6f5263e2499319f5702b3bdeb19e7a424f2ebe42d2f3746faf26520ae7a2173d623b4a2581",
+      "bip32_xprv": "xprv9s21ZrQH143K3GqJJ1jGQ1g6fZTEgbM45NMrCFVWZvuEtCtX1AdhkZGSHVPEUxZ6R2xJDycABK2xozbfG9yMSacuPWCyfER3Uhyusxe4bEU"
+    },
+    {
+      "entropy": "18ab19a9f54a9274f03e5209a2ac8a91",
+      "mnemonic": "avena fiel haz topar palco crimen raíz rigor alma astuto brisa bucle",
+      "passphrase": "TREZOR",
+      "seed": "805b75dfa5021feb4212af6508364acb71bc26f3ae3e1b04d46997da276ffb3698b55986d20eaf26d60d8ab4a57fbebb6caed0d63cd68e5f2ce523880e5082df",
+      "bip32_xprv": "xprv9s21ZrQH143K2JH1XgjetHqEKTTtt9hukDL9SUjTAvBX9zTacuBXbKEkei4d7DvCPvFnYYNgSpW2RT149GGY9mfN4xs1y1jWxTJb6yNHdej"
+    },
+    {
+      "entropy": "18a2e1d81b8ecfb2a333adcb0c17a5b9eb76cc5d05db91a4",
+      "mnemonic": "avena atún jeringa comida tráfico sobre mente jaula ritmo gala tobillo íntimo poesía grano inútil probar molde calle",
+      "passphrase": "TREZOR",
+      "seed": "82509727ea09696854191b68976f202411fcf6cfa26187bbf5bf3fe966f12fe2d13629ed71eafed0624db2a5b2214b80b3394c910d87801b7f6844b29c9e901d",
+      "bip32_xprv": "xprv9s21ZrQH143K3k2YsodupKc1CJWmnwpt1HQTs2KtExtsTT2zdCfoLsGfRpPAdP3n2LFk8i5QXWQwFmJ4gL3LnbaWwDumArstGmsf82j4BiM"
+    },
+    {
+      "entropy": "15da872c95a13dd738fbf50e427583ad61f18fd99f628c417a61cf8343c90419",
+      "mnemonic": "atajo secta rito carga asalto torpedo teléfono libro anual asado gallo flauta boa rescate gratis toser melón ameno náusea obvio clínica tender apuro caudal",
+      "passphrase": "TREZOR",
+      "seed": "9f99ae125b87b67703d85562f90a95c2f72066a3bc39e7b4578c7f79856949f3fd4acf976743b9be9cac0e2e1063e7bc86ca8ddffcc2b67efcc8b31d69adc067",
+      "bip32_xprv": "xprv9s21ZrQH143K3sr5hCfTBtsRJ2cWY6fQ1RqkwSXCrfURJfZFMVWtF2Ljfhy3nixFknUPYwDHtUQwks6LD2hvQ48k6Ze5cWgm39ocAaEw5Tu"
+    }
+  ]
+}

@@ -96,6 +96,14 @@ public final class SeedCalculationTests {
         }
     }
 
+    @Test
+    public void all_spanish_test_vectors() throws Exception {
+        final TestVectorJson data = TestVectorJson.loadSpanish();
+        for (final TestVector testVector : data.vectors) {
+            assertEquals(testVector.entropy, testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
+        }
+    }
+
     private static String calculateSeedHex(final String mnemonic) {
         return calculateSeedHex(mnemonic, "");
     }
