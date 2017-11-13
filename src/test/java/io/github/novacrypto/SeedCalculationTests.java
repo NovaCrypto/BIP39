@@ -21,9 +21,10 @@
 
 package io.github.novacrypto;
 
+import io.github.novacrypto.bip32.PrivateKey;
+import io.github.novacrypto.bip32.networks.Bitcoin;
 import io.github.novacrypto.bip39.JavaxPBKDF2WithHmacSHA256;
 import io.github.novacrypto.bip39.SeedCalculator;
-import io.github.novacrypto.bip39.wordlists.Japanese;
 import io.github.novacrypto.testjson.EnglishJson;
 import io.github.novacrypto.testjson.TestVector;
 import io.github.novacrypto.testjson.TestVectorJson;
@@ -31,25 +32,25 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
+import static io.github.novacrypto.base58.Base58.base58Encode;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public final class SeedCalculationTests {
 
     @Test
-    public void bip39_english() throws Exception {
+    public void bip39_english() {
         assertEquals("2eea1e4d099089606b7678809be6090ccba0fca171d4ed42c550194ca8e3600cd1e5989dcca38e5f903f5c358c92e0dcaffc9e71a48ad489bb868025c907d1e1",
                 calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice"));
     }
 
     @Test
-    public void bip39_english_with_passphrase() throws Exception {
+    public void bip39_english_with_passphrase() {
         assertEquals("36732d826f4fa483b5fe8373ef8d6aa3cb9c8fb30463d6c0063ee248afca2f87d11ebe6e75c2fb2736435994b868f8e9d4f4474c65ee05ac47aad7ef8a497846",
                 calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "CryptoIsCool"));
     }
 
     @Test
-    public void all_english_test_vectors() throws Exception {
+    public void all_english_test_vectors() {
         final EnglishJson data = EnglishJson.load();
         for (final String[] testCase : data.english) {
             assertEquals(testCase[2], calculateSeedHex(testCase[1], "TREZOR"));
@@ -57,51 +58,57 @@ public final class SeedCalculationTests {
     }
 
     @Test
-    public void passphrase_normalization() throws Exception {
+    public void passphrase_normalization() {
         assertEquals(calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "ｶ"),
                 calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "カ"));
     }
 
     @Test
-    public void normalize_Japanese() throws Exception {
+    public void normalize_Japanese() {
         assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
                 calculateSeedHex("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら"));
     }
 
     @Test
-    public void normalize_Japanese_2() throws Exception {
+    public void normalize_Japanese_2() {
         assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
                 calculateSeedHex("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら"));
     }
 
     @Test
-    public void normalize_Japanese_regular_spaces() throws Exception {
+    public void normalize_Japanese_regular_spaces() {
         assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
                 calculateSeedHex("あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あおぞら"));
     }
 
     @Test
-    public void all_japanese_test_vectors() throws Exception {
+    public void all_japanese_test_vectors() {
         final TestVectorJson data = TestVectorJson.loadJapanese();
         for (final TestVector testVector : data.vectors) {
-            assertEquals(testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
+            testSeedGeneration(testVector);
         }
     }
 
     @Test
-    public void all_french_test_vectors() throws Exception {
+    public void all_french_test_vectors() {
         final TestVectorJson data = TestVectorJson.loadFrench();
         for (final TestVector testVector : data.vectors) {
-            assertEquals(testVector.entropy, testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
+            testSeedGeneration(testVector);
         }
     }
 
     @Test
-    public void all_spanish_test_vectors() throws Exception {
+    public void all_spanish_test_vectors() {
         final TestVectorJson data = TestVectorJson.loadSpanish();
         for (final TestVector testVector : data.vectors) {
-            assertEquals(testVector.entropy, testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase));
+            testSeedGeneration(testVector);
         }
+    }
+
+    private static void testSeedGeneration(TestVector testVector) {
+        final byte[] seed = new SeedCalculator().calculateSeed(testVector.mnemonic, testVector.passphrase);
+        assertEquals(testVector.seed, toHex(seed));
+        assertEquals(testVector.bip32Xprv, base58Encode(PrivateKey.fromSeed(seed, Bitcoin.MAIN_NET).toByteArray()));
     }
 
     private static String calculateSeedHex(final String mnemonic) {
