@@ -23,6 +23,7 @@ package io.github.novacrypto;
 
 import io.github.novacrypto.bip39.JavaxPBKDF2WithHmacSHA256;
 import io.github.novacrypto.bip39.SeedCalculator;
+import io.github.novacrypto.bip39.wordlists.Japanese;
 import io.github.novacrypto.testjson.EnglishJson;
 import io.github.novacrypto.testjson.TestVector;
 import io.github.novacrypto.testjson.TestVectorJson;
@@ -31,6 +32,7 @@ import org.junit.Test;
 import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public final class SeedCalculationTests {
 
@@ -58,6 +60,24 @@ public final class SeedCalculationTests {
     public void passphrase_normalization() throws Exception {
         assertEquals(calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "ｶ"),
                 calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", "カ"));
+    }
+
+    @Test
+    public void normalize_Japanese() throws Exception {
+        assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
+                calculateSeedHex("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら"));
+    }
+
+    @Test
+    public void normalize_Japanese_2() throws Exception {
+        assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
+                calculateSeedHex("あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あいこくしん　あおぞら"));
+    }
+
+    @Test
+    public void normalize_Japanese_regular_spaces() throws Exception {
+        assertEquals("646f1a38134c556e948e6daef213609a62915ef568edb07ffa6046c87638b4b140fef2e0c6d7233af640c4a63de6d1a293288058c8ac1d113255d0504e63f301",
+                calculateSeedHex("あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あいこくしん あおぞら"));
     }
 
     @Test
