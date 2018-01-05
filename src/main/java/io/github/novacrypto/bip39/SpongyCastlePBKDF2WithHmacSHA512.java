@@ -29,7 +29,7 @@ import org.spongycastle.crypto.params.KeyParameter;
 /**
  * This implementation is useful for older Java implementations, for example it is suitable for all Android API levels.
  */
-public enum SpongyCastlePBKDF2WithHmacSHA256 implements PBKDF2WithHmacSHA256 {
+public enum SpongyCastlePBKDF2WithHmacSHA512 implements PBKDF2WithHmacSHA512 {
     INSTANCE;
 
     @Override

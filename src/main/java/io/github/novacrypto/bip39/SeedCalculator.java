@@ -23,7 +23,6 @@ package io.github.novacrypto.bip39;
 
 import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
 
-import java.text.Normalizer;
 import java.util.Arrays;
 
 import static io.github.novacrypto.bip39.Normalization.normalizeNFKD;
@@ -35,18 +34,18 @@ import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime
 public final class SeedCalculator {
 
     private final byte[] fixedSalt = getUtf8Bytes("mnemonic");
-    private final PBKDF2WithHmacSHA256 hashAlgorithm;
+    private final PBKDF2WithHmacSHA512 hashAlgorithm;
 
-    public SeedCalculator(PBKDF2WithHmacSHA256 hashAlgorithm) {
+    public SeedCalculator(PBKDF2WithHmacSHA512 hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 
     /**
-     * Creates a seed calculator using {@link SpongyCastlePBKDF2WithHmacSHA256} which is the most compatible.
-     * Use {@link SeedCalculator#SeedCalculator(PBKDF2WithHmacSHA256)} to supply another.
+     * Creates a seed calculator using {@link SpongyCastlePBKDF2WithHmacSHA512} which is the most compatible.
+     * Use {@link SeedCalculator#SeedCalculator(PBKDF2WithHmacSHA512)} to supply another.
      */
     public SeedCalculator() {
-        this(SpongyCastlePBKDF2WithHmacSHA256.INSTANCE);
+        this(SpongyCastlePBKDF2WithHmacSHA512.INSTANCE);
     }
 
     /**
