@@ -33,7 +33,7 @@ import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime
  * Not available in all Java implementations, for example will not find the implementation before Android API 26+.
  * See https://developer.android.com/reference/javax/crypto/SecretKeyFactory.html for more details.
  */
-public enum JavaxPBKDF2WithHmacSHA256 implements PBKDF2WithHmacSHA256 {
+public enum JavaxPBKDF2WithHmacSHA512 implements PBKDF2WithHmacSHA512 {
     INSTANCE;
 
     private SecretKeyFactory skf = getPbkdf2WithHmacSHA512();

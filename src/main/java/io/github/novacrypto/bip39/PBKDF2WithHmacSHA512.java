@@ -21,7 +21,7 @@
 
 package io.github.novacrypto.bip39;
 
-public interface PBKDF2WithHmacSHA256 {
+public interface PBKDF2WithHmacSHA512 {
 
     byte[] hash(final char[] chars, final byte[] salt);
 }
