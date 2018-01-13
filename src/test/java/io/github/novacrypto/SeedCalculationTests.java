@@ -30,8 +30,7 @@ import io.github.novacrypto.testjson.TestVector;
 import io.github.novacrypto.testjson.TestVectorJson;
 import org.junit.Test;
 
-import java.math.BigInteger;
-
+import static io.github.novacrypto.Hex.toHex;
 import static io.github.novacrypto.base58.Base58.base58Encode;
 import static org.junit.Assert.assertEquals;
 
@@ -124,16 +123,5 @@ public final class SeedCalculationTests {
 
     private static String calculateSeed(String mnemonic, String passphrase, SeedCalculator seedCalculator) {
         return toHex(seedCalculator.calculateSeed(mnemonic, passphrase));
-    }
-
-    private static String toHex(byte[] array) {
-        final BigInteger bi = new BigInteger(1, array);
-        final String hex = bi.toString(16);
-        final int paddingLength = (array.length * 2) - hex.length();
-        if (paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
-        } else {
-            return hex;
-        }
     }
 }
