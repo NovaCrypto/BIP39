@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,21 +31,21 @@ public final class CharSequenceSplitterTests {
 
     @Test
     public void empty_sequence() {
-        final List<CharSequence> list = new CharSequenceSplitter(' ').split("");
+        final List<CharSequence> list = new CharSequenceSplitter(' ', ' ').split("");
         assertEquals(1, list.size());
         assertEquals("", list.get(0).toString());
     }
 
     @Test
     public void sequence_containing_one() {
-        final List<CharSequence> list = new CharSequenceSplitter(' ').split("abc");
+        final List<CharSequence> list = new CharSequenceSplitter(' ', ' ').split("abc");
         assertEquals(1, list.size());
         assertEquals("abc", list.get(0).toString());
     }
 
     @Test
     public void two_items() {
-        final List<CharSequence> list = new CharSequenceSplitter(' ').split("abc def");
+        final List<CharSequence> list = new CharSequenceSplitter(' ', ' ').split("abc def");
         assertEquals(2, list.size());
         assertEquals("abc", list.get(0).toString());
         assertEquals("def", list.get(1).toString());
@@ -53,7 +53,7 @@ public final class CharSequenceSplitterTests {
 
     @Test
     public void two_items_different_separator() {
-        final List<CharSequence> list = new CharSequenceSplitter('-').split("abc-def");
+        final List<CharSequence> list = new CharSequenceSplitter('-', '-').split("abc-def");
         assertEquals(2, list.size());
         assertEquals("abc", list.get(0).toString());
         assertEquals("def", list.get(1).toString());
@@ -61,7 +61,7 @@ public final class CharSequenceSplitterTests {
 
     @Test
     public void just_separator() {
-        final List<CharSequence> list = new CharSequenceSplitter('-').split("-");
+        final List<CharSequence> list = new CharSequenceSplitter('-', '-').split("-");
         assertEquals(2, list.size());
         assertEquals("", list.get(0).toString());
         assertEquals("", list.get(1).toString());
@@ -69,7 +69,7 @@ public final class CharSequenceSplitterTests {
 
     @Test
     public void separator_at_end() {
-        final List<CharSequence> list = new CharSequenceSplitter('-').split("a-b-c-");
+        final List<CharSequence> list = new CharSequenceSplitter('-', '-').split("a-b-c-");
         assertEquals(4, list.size());
         assertEquals("a", list.get(0).toString());
         assertEquals("b", list.get(1).toString());
@@ -79,7 +79,7 @@ public final class CharSequenceSplitterTests {
 
     @Test
     public void two_separators_in_middle() {
-        final List<CharSequence> list = new CharSequenceSplitter('-').split("a--b-c");
+        final List<CharSequence> list = new CharSequenceSplitter('-', '-').split("a--b-c");
         assertEquals(4, list.size());
         assertEquals("a", list.get(0).toString());
         assertEquals("", list.get(1).toString());
@@ -88,10 +88,19 @@ public final class CharSequenceSplitterTests {
     }
 
     @Test
+    public void different_separators() {
+        final List<CharSequence> list = new CharSequenceSplitter('-', '+').split("a-b+c");
+        assertEquals(3, list.size());
+        assertEquals("a", list.get(0).toString());
+        assertEquals("b", list.get(1).toString());
+        assertEquals("c", list.get(2).toString());
+    }
+
+    @Test
     public void whiteBox_number_of_expected_calls() {
         final CharSequence inner = "abc-def-123";
         final Spy spy = new Spy(inner);
-        new CharSequenceSplitter('-').split(spy);
+        new CharSequenceSplitter('-', '-').split(spy);
         assertEquals(1, spy.lengthCalls);
         assertEquals(inner.length(), spy.charAtCalls);
         assertEquals(3, spy.subSequenceCalls);

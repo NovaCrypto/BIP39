@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@ import io.github.novacrypto.bip39.Validation.UnexpectedWhiteSpaceException;
 import io.github.novacrypto.bip39.Validation.WordNotFoundException;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 import static io.github.novacrypto.bip39.MnemonicGenerator.firstByteOfSha256;
 import static io.github.novacrypto.bip39.Normalization.normalizeNFKD;
@@ -45,7 +45,7 @@ public final class MnemonicValidator {
         for (int i = 0; i < 1 << 11; i++) {
             words[i] = new WordAndIndex(i, wordList.getWord(i));
         }
-        charSequenceSplitter = new CharSequenceSplitter(normalizeNFKD(wordList.getSpace()));
+        charSequenceSplitter = new CharSequenceSplitter(wordList.getSpace(), normalizeNFKD(wordList.getSpace()));
         Arrays.sort(words, wordListSortOrder);
     }
 
@@ -64,18 +64,47 @@ public final class MnemonicValidator {
      * Check that the supplied mnemonic fits the BIP0039 spec.
      *
      * @param mnemonic The memorable list of words
-     * @throws InvalidChecksumException  If the last bytes don't match the expected last bytes
-     * @throws InvalidWordCountException If the number of words is not a multiple of 3, 24 or fewer
-     * @throws WordNotFoundException     If a word in the mnemonic is not present in the word list
+     * @throws InvalidChecksumException      If the last bytes don't match the expected last bytes
+     * @throws InvalidWordCountException     If the number of words is not a multiple of 3, 24 or fewer
+     * @throws WordNotFoundException         If a word in the mnemonic is not present in the word list
+     * @throws UnexpectedWhiteSpaceException Occurs if one of the supplied words is empty, e.g. a double space
      */
     public void validate(final String mnemonic) throws
             InvalidChecksumException,
             InvalidWordCountException,
             WordNotFoundException,
             UnexpectedWhiteSpaceException {
-        final CharSequence normalizedMnemonic = normalizeNFKD(mnemonic);
+        validate(charSequenceSplitter.split(mnemonic));
+    }
 
-        final int[] wordIndexes = findWordIndexes(normalizedMnemonic);
+    /**
+     * Check that the supplied mnemonic fits the BIP0039 spec.
+     * <p>
+     * The purpose of this method overload is to avoid constructing a mnemonic String if you have gathered a list of
+     * words from the user.
+     *
+     * @param mnemonic The memorable list of words
+     * @throws InvalidChecksumException      If the last bytes don't match the expected last bytes
+     * @throws InvalidWordCountException     If the number of words is not a multiple of 3, 24 or fewer
+     * @throws WordNotFoundException         If a word in the mnemonic is not present in the word list
+     * @throws UnexpectedWhiteSpaceException Occurs if one of the supplied words is empty
+     */
+    public void validate(final Collection<? extends CharSequence> mnemonic) throws
+            InvalidChecksumException,
+            InvalidWordCountException,
+            WordNotFoundException,
+            UnexpectedWhiteSpaceException {
+        final int[] wordIndexes = findWordIndexes(mnemonic);
+        try {
+            validate(wordIndexes);
+        } finally {
+            Arrays.fill(wordIndexes, 0);
+        }
+    }
+
+    private static void validate(final int[] wordIndexes) throws
+            InvalidWordCountException,
+            InvalidChecksumException {
         final int ms = wordIndexes.length;
 
         final int entPlusCs = ms * 11;
@@ -100,16 +129,17 @@ public final class MnemonicValidator {
             throw new InvalidChecksumException();
     }
 
-    private int[] findWordIndexes(final CharSequence mnemonic) throws WordNotFoundException, UnexpectedWhiteSpaceException {
-        final List<CharSequence> split = charSequenceSplitter.split(mnemonic);
+    private int[] findWordIndexes(final Collection<? extends CharSequence> split) throws
+            UnexpectedWhiteSpaceException,
+            WordNotFoundException {
         final int ms = split.size();
         final int[] result = new int[ms];
-        for (int i = 0; i < ms; i++) {
-            final CharSequence buffer = split.get(i);
+        int i = 0;
+        for (final CharSequence buffer : split) {
             if (buffer.length() == 0) {
                 throw new UnexpectedWhiteSpaceException();
             }
-            result[i] = findWordIndex(buffer);
+            result[i++] = findWordIndex(buffer);
         }
         return result;
     }
@@ -127,19 +157,19 @@ public final class MnemonicValidator {
         return words[index].index;
     }
 
-    private static void wordIndexesToEntropyWithCheckSum(int[] wordIndexes, byte[] entropyWithChecksum) {
+    private static void wordIndexesToEntropyWithCheckSum(final int[] wordIndexes, final byte[] entropyWithChecksum) {
         for (int i = 0, bi = 0; i < wordIndexes.length; i++, bi += 11) {
             ByteUtils.writeNext11(entropyWithChecksum, wordIndexes[i], bi);
         }
     }
 
-    private static byte maskOfFirstNBits(int n) {
+    private static byte maskOfFirstNBits(final int n) {
         return (byte) ~((1 << (8 - n)) - 1);
     }
 
     private static final Comparator<WordAndIndex> wordListSortOrder = new Comparator<WordAndIndex>() {
         @Override
-        public int compare(WordAndIndex o1, WordAndIndex o2) {
+        public int compare(final WordAndIndex o1, final WordAndIndex o2) {
             return CharSequenceComparators.ALPHABETICAL.compare(o1.normalized, o2.normalized);
         }
     };
@@ -149,7 +179,7 @@ public final class MnemonicValidator {
         final String normalized;
         final int index;
 
-        WordAndIndex(int i, String word) {
+        WordAndIndex(final int i, final String word) {
             this.word = word;
             normalized = normalizeNFKD(word);
             index = i;
