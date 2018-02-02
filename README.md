@@ -28,7 +28,7 @@ Add dependency:
 
 ```
 dependencies {
-    compile 'io.github.novacrypto:BIP39:0.1.7'
+    compile 'io.github.novacrypto:BIP39:0.1.8'
 }
 
 ```
@@ -81,6 +81,14 @@ try {
 }
 ```
 
+Or if you have a list of words from a word list:
+
+```
+MnemonicValidator
+        .ofWordList(English.INSTANCE)
+        .validate(mnemonicWordsInAList);
+```
+
 ## Generate a seed
 
 As does not use a word list, can be used now for any language.
@@ -89,7 +97,15 @@ As does not use a word list, can be used now for any language.
 byte[] seed = new SeedCalculator().calculateSeed(mnemonic, passphrase);
 ```
 
-That uses SpongyCastle, if you don't need or want that dependency, you can use `javax.crypto` like so:
+Or if you have a list of words from a word list:
+
+```
+byte[] seed = new SeedCalculator()
+                     .withWordsFromWordList(English.INSTANCE)
+                     .calculateSeed(mnemonicWordsInAList, passphrase);
+```
+
+Those examples both use SpongyCastle, if you don't need or want that dependency, you can use `javax.crypto` like so:
 
 ```
 byte[] seed = new SeedCalculator(JavaxPBKDF2WithHmacSHA256.INSTANCE).calculateSeed(mnemonic, passphrase);
