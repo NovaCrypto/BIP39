@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,13 +35,38 @@ import io.github.novacrypto.testjson.EnglishJson;
 import io.github.novacrypto.testjson.TestVector;
 import io.github.novacrypto.testjson.TestVectorJson;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.StringJoiner;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 
+@RunWith(Parameterized.class)
 public final class MnemonicValidationTests {
+
+    private final Mode mode;
+
+    enum Mode {
+        ValidateWholeString,
+        ValidateAsStringList
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+                {Mode.ValidateWholeString},
+                {Mode.ValidateAsStringList}
+        });
+    }
+
+    public MnemonicValidationTests(final Mode mode) {
+        this.mode = mode;
+    }
 
     @Test(expected = WordNotFoundException.class)
     public void bad_english_word() throws Exception {
@@ -119,8 +144,8 @@ public final class MnemonicValidationTests {
             validate("そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
                     Japanese.INSTANCE);
         } catch (WordNotFoundException e) {
-            assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
-            assertEquals("れきだ", e.getWord());
+            assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
+            assertEquals("れきだ", e.getWord());
             assertEquals("れきし", e.getSuggestion1());
             assertEquals("れきだい", e.getSuggestion2());
             throw e;
@@ -131,21 +156,6 @@ public final class MnemonicValidationTests {
     public void eleven_words() throws Exception {
         validate("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon",
                 English.INSTANCE);
-    }
-
-    @Test
-    public void InvalidWordCountException_message() throws Exception {
-        assertEquals("Not a correct number of words", new InvalidWordCountException().getMessage());
-    }
-
-    @Test
-    public void InvalidChecksumException_message() throws Exception {
-        assertEquals("Invalid checksum", new InvalidChecksumException().getMessage());
-    }
-
-    @Test
-    public void UnexpectedWhiteSpaceException_message() throws Exception {
-        assertEquals("Unexpected whitespace", new UnexpectedWhiteSpaceException().getMessage());
     }
 
     @Test
@@ -171,6 +181,7 @@ public final class MnemonicValidationTests {
 
     @Test
     public void additional_space_end_English() {
+        if (mode == Mode.ValidateAsStringList) return;
         assertThatThrownBy(() ->
                 validate("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about ",
                         English.INSTANCE)
@@ -260,14 +271,26 @@ public final class MnemonicValidationTests {
         assertEquals(18, testCaseCount);
     }
 
-    private static boolean validate(String mnemonic, WordList wordList) throws
+    private boolean validate(String mnemonic, WordList wordList) throws
             InvalidWordCountException,
             WordNotFoundException,
             UnexpectedWhiteSpaceException {
         try {
-            MnemonicValidator
-                    .ofWordList(wordList)
-                    .validate(mnemonic);
+            switch (mode) {
+                case ValidateWholeString: {
+                    MnemonicValidator
+                            .ofWordList(wordList)
+                            .validate(mnemonic);
+                    break;
+                }
+                case ValidateAsStringList: {
+                    final List<String> words = Arrays.asList(mnemonic.split("[ \u3000]"));
+                    MnemonicValidator
+                            .ofWordList(wordList)
+                            .validate(words);
+                    break;
+                }
+            }
             return true;
         } catch (InvalidChecksumException e) {
             return false;

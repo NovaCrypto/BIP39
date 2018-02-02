@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public final class SeedCalculator {
     private final byte[] fixedSalt = getUtf8Bytes("mnemonic");
     private final PBKDF2WithHmacSHA512 hashAlgorithm;
 
-    public SeedCalculator(PBKDF2WithHmacSHA512 hashAlgorithm) {
+    public SeedCalculator(final PBKDF2WithHmacSHA512 hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 
@@ -54,24 +54,35 @@ public final class SeedCalculator {
      * <p>
      * Due to normalization, these need to be {@link String}, and not {@link CharSequence}, this is an open issue:
      * https://github.com/NovaCrypto/BIP39/issues/7
+     * <p>
+     * If you have a list of words selected from a word list, you can use {@link #withWordsFromWordList} then
+     * {@link SeedCalculatorByWordListLookUp#calculateSeed}
      *
      * @param mnemonic   The memorable list of words
      * @param passphrase An optional passphrase, use "" if not required
      * @return a seed for HD wallet generation
      */
-    public byte[] calculateSeed(String mnemonic, String passphrase) {
-        mnemonic = normalizeNFKD(mnemonic);
-        passphrase = normalizeNFKD(passphrase);
+    public byte[] calculateSeed(final String mnemonic, final String passphrase) {
+        final char[] chars = normalizeNFKD(mnemonic).toCharArray();
+        try {
+            return calculateSeed(chars, passphrase);
+        } finally {
+            Arrays.fill(chars, '\0');
+        }
+    }
 
-        final char[] chars = mnemonic.toCharArray();
-        final byte[] salt2 = getUtf8Bytes(passphrase);
+    byte[] calculateSeed(final char[] mnemonicChars, final String passphrase) {
+        final String normalizedPassphrase = normalizeNFKD(passphrase);
+        final byte[] salt2 = getUtf8Bytes(normalizedPassphrase);
         final byte[] salt = combine(fixedSalt, salt2);
         clear(salt2);
-        final byte[] encoded = hash(chars, salt);
-        Arrays.fill(chars, '\0');
+        final byte[] encoded = hash(mnemonicChars, salt);
         clear(salt);
-
         return encoded;
+    }
+
+    public SeedCalculatorByWordListLookUp withWordsFromWordList(final WordList wordList) {
+        return new SeedCalculatorByWordListLookUp(this, wordList);
     }
 
     private static byte[] combine(final byte[] array1, final byte[] array2) {
@@ -81,11 +92,11 @@ public final class SeedCalculator {
         return bytes;
     }
 
-    private static void clear(byte[] salt) {
+    private static void clear(final byte[] salt) {
         Arrays.fill(salt, (byte) 0);
     }
 
-    private byte[] hash(char[] chars, byte[] salt) {
+    private byte[] hash(final char[] chars, final byte[] salt) {
         return hashAlgorithm.hash(chars, salt);
     }
 
