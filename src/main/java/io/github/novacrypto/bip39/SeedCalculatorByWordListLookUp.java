@@ -21,29 +21,25 @@
 
 package io.github.novacrypto.bip39;
 
-import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class SeedCalculatorByWordListLookUp {
     private final SeedCalculator seedCalculator;
     private final Map<CharSequence, char[]> map = new HashMap<>();
+    private final NFKDNormalizer normalizer;
 
     SeedCalculatorByWordListLookUp(final SeedCalculator seedCalculator, final WordList wordList) {
         this.seedCalculator = seedCalculator;
+        normalizer = new WordListMapNormalization(wordList);
         for (int i = 0; i < 1 << 11; i++) {
-            final String word = wordList.getWord(i);
-            map.put(word, Normalizer.normalize(word, Normalizer.Form.NFKD).toCharArray());
+            final String word = normalizer.normalize(wordList.getWord(i));
+            map.put(word, word.toCharArray());
         }
     }
 
     /**
      * Calculate the seed given a mnemonic and corresponding passphrase.
      * The phrase is not checked for validity here, for that use a {@link MnemonicValidator}.
-     * The word supplied need to be exactly the same as the ones in the word list, if they are not a
-     * {@link WordNotExactlyAsInSuppliedWordList} will be thrown.
      * <p>
      * The purpose of this method is to avoid constructing a mnemonic String if you have gathered a list of
      * words from the user and also to avoid having to normalize it, all words in the {@link WordList} are normalized
@@ -52,20 +48,21 @@ public final class SeedCalculatorByWordListLookUp {
      * Due to normalization, the passphrase still needs to be {@link String}, and not {@link CharSequence}, this is an
      * open issue: https://github.com/NovaCrypto/BIP39/issues/7
      *
-     * @param mnemonicFromWordList The memorable list of words, selected from the word list that was supplied while
-     *                             creating this object.
-     * @param passphrase           An optional passphrase, use "" if not required
+     * @param mnemonic   The memorable list of words, ideally selected from the word list that was supplied while creating this object.
+     * @param passphrase An optional passphrase, use "" if not required
      * @return a seed for HD wallet generation
      */
-    public byte[] calculateSeed(final Collection<? extends CharSequence> mnemonicFromWordList, final String passphrase) {
-        final int words = mnemonicFromWordList.size();
+    public byte[] calculateSeed(final Collection<? extends CharSequence> mnemonic, final String passphrase) {
+        final int words = mnemonic.size();
         final char[][] chars = new char[words][];
+        final List<char[]> toClear = new LinkedList<>();
         int count = 0;
         int wordIndex = 0;
-        for (final CharSequence sequence : mnemonicFromWordList) {
-            final char[] wordChars = map.get(sequence);
+        for (final CharSequence word : mnemonic) {
+            char[] wordChars = map.get(normalizer.normalize(word));
             if (wordChars == null) {
-                throw new WordNotExactlyAsInSuppliedWordList();
+                wordChars = normalizer.normalize(word).toCharArray();
+                toClear.add(wordChars);
             }
             chars[wordIndex++] = wordChars;
             count += wordChars.length;
@@ -85,6 +82,8 @@ public final class SeedCalculatorByWordListLookUp {
         } finally {
             Arrays.fill(mnemonicChars, '\0');
             Arrays.fill(chars, null);
+            for (final char[] charsToClear : toClear)
+                Arrays.fill(charsToClear, '\0');
         }
     }
 }
