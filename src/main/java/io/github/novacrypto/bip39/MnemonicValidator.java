@@ -39,8 +39,10 @@ import static io.github.novacrypto.bip39.Normalization.normalizeNFKD;
 public final class MnemonicValidator {
     private final WordAndIndex[] words;
     private final CharSequenceSplitter charSequenceSplitter;
+    private final NFKDNormalizer normalizer;
 
     private MnemonicValidator(final WordList wordList) {
+        normalizer = new WordListMapNormalization(wordList);
         words = new WordAndIndex[1 << 11];
         for (int i = 0; i < 1 << 11; i++) {
             words[i] = new WordAndIndex(i, wordList.getWord(i));
@@ -69,7 +71,7 @@ public final class MnemonicValidator {
      * @throws WordNotFoundException         If a word in the mnemonic is not present in the word list
      * @throws UnexpectedWhiteSpaceException Occurs if one of the supplied words is empty, e.g. a double space
      */
-    public void validate(final String mnemonic) throws
+    public void validate(final CharSequence mnemonic) throws
             InvalidChecksumException,
             InvalidWordCountException,
             WordNotFoundException,
@@ -145,7 +147,7 @@ public final class MnemonicValidator {
     }
 
     private int findWordIndex(final CharSequence buffer) throws WordNotFoundException {
-        final WordAndIndex key = new WordAndIndex(-1, buffer.toString());
+        final WordAndIndex key = new WordAndIndex(-1, buffer);
         final int index = Arrays.binarySearch(words, key, wordListSortOrder);
         if (index < 0) {
             final int insertionPoint = -index - 1;
@@ -175,13 +177,13 @@ public final class MnemonicValidator {
     };
 
     private class WordAndIndex {
-        final String word;
+        final CharSequence word;
         final String normalized;
         final int index;
 
-        WordAndIndex(final int i, final String word) {
+        WordAndIndex(final int i, final CharSequence word) {
             this.word = word;
-            normalized = normalizeNFKD(word);
+            normalized = normalizer.normalize(word);
             index = i;
         }
     }

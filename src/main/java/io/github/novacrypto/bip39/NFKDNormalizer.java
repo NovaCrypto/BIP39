@@ -21,5 +21,7 @@
 
 package io.github.novacrypto.bip39;
 
-public final class WordNotExactlyAsInSuppliedWordList extends RuntimeException {
+public interface NFKDNormalizer {
+
+    String normalize(CharSequence charSequence);
 }

@@ -21,7 +21,10 @@
 
 package io.github.novacrypto;
 
-import io.github.novacrypto.bip39.*;
+import io.github.novacrypto.bip39.JavaxPBKDF2WithHmacSHA512;
+import io.github.novacrypto.bip39.SeedCalculator;
+import io.github.novacrypto.bip39.SeedCalculatorByWordListLookUp;
+import io.github.novacrypto.bip39.WordList;
 import io.github.novacrypto.bip39.wordlists.English;
 import io.github.novacrypto.bip39.wordlists.French;
 import io.github.novacrypto.bip39.wordlists.Japanese;
@@ -33,9 +36,12 @@ import org.junit.Test;
 
 import java.text.Normalizer;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.github.novacrypto.Hex.toHex;
+import static io.github.novacrypto.TestCharSequence.preventToStringAndSubSequence;
 import static org.junit.Assert.assertEquals;
 
 public final class SeedCalculationFromWordListTests {
@@ -46,9 +52,20 @@ public final class SeedCalculationFromWordListTests {
                 calculateSeedHex("solar puppy hawk oxygen trip brief erase slot fossil mechanic filter voice", ""));
     }
 
-    @Test(expected = WordNotExactlyAsInSuppliedWordList.class)
+    @Test
     public void bip39_english_word_not_found() {
-        calculateSeedHex("solar puppies hawk oxygen trip brief erase slot fossil mechanic filter voice", "");
+        final String mnemonicWithBadWord = "solar puppies hawk oxygen trip brief erase slot fossil mechanic filter voice";
+        assertEquals(toHex(new SeedCalculator().calculateSeed(mnemonicWithBadWord, "")),
+                calculateSeedHex(mnemonicWithBadWord, "",
+                        English.INSTANCE, ValidateMode.EXPECTING_BAD_WORD));
+    }
+
+    @Test
+    public void bip39_non_normalized_Japanese_word_not_found() {
+        final String unNormalizedMnemonicWithBadWord = Normalizer.normalize("あおぞらAlan　あいこくしん　あいこくしん　あいこくしん", Normalizer.Form.NFC);
+        assertEquals(toHex(new SeedCalculator().calculateSeed(unNormalizedMnemonicWithBadWord, "")),
+                calculateSeedHex(unNormalizedMnemonicWithBadWord, "",
+                        Japanese.INSTANCE, ValidateMode.EXPECTING_BAD_WORD));
     }
 
     @Test
@@ -123,38 +140,48 @@ public final class SeedCalculationFromWordListTests {
         assertEquals(testVector.seed, calculateSeedHex(testVector.mnemonic, testVector.passphrase, wordList));
     }
 
+    private enum ValidateMode {
+        NOT_EXPECTING_BAD_WORD,
+        EXPECTING_BAD_WORD
+    }
+
     private static String calculateSeedHex(final String mnemonic, String passphrase) {
-        return calculateSeedHex(mnemonic, passphrase, English.INSTANCE);
+        return calculateSeedHex(mnemonic, passphrase, ValidateMode.NOT_EXPECTING_BAD_WORD);
+    }
+
+    private static String calculateSeedHex(final String mnemonic, String passphrase, ValidateMode validateMode) {
+        return calculateSeedHex(mnemonic, passphrase, English.INSTANCE, validateMode);
     }
 
     private static String calculateSeedHex(final String mnemonic, String passphrase, WordList wordList) {
+        return calculateSeedHex(mnemonic, passphrase, wordList, ValidateMode.NOT_EXPECTING_BAD_WORD);
+    }
+
+    private static String calculateSeedHex(final String mnemonic, String passphrase, WordList wordList, ValidateMode validateMode) {
         final List<String> mnemonic1 = Arrays.asList(mnemonic.split("[ \u3000]"));
-        for (int i = 0; i < mnemonic1.size(); i++) {
-            mnemonic1.set(i, findWordFromWordList(mnemonic1.get(i), wordList));
-        }
-        return calculateSeedHex(mnemonic1, passphrase, wordList);
+        return calculateSeedHex(mnemonic1, passphrase, wordList, validateMode);
     }
 
-    private static String findWordFromWordList(String s, WordList wordList) {
-        final String find = Normalizer.normalize(s, Normalizer.Form.NFKD);
-        for (int i = 0; i < 2048; i++) {
-            final String wordListWord = wordList.getWord(i);
-            if (find.equals(Normalizer.normalize(wordListWord, Normalizer.Form.NFKD)))
-                return wordListWord;
-        }
-        return find;
-    }
+    private static String calculateSeedHex(Collection<? extends CharSequence> mnemonic, String passphrase, WordList wordList, ValidateMode validateMode) {
+        mnemonic = mnemonic.stream()
+                .map(sequence ->
+                        validateMode == ValidateMode.EXPECTING_BAD_WORD
+                                ? sequence
+                                : preventToStringAndSubSequence(sequence))
+                .collect(Collectors.toList());
 
-    private static String calculateSeedHex(List<String> mnemonic, String passphrase, WordList wordList) {
         final String seed1 = calculateSeed(mnemonic, passphrase, new SeedCalculator()
                 .withWordsFromWordList(wordList));
-        final String seed2 = calculateSeed(mnemonic, passphrase, new SeedCalculator(JavaxPBKDF2WithHmacSHA512.INSTANCE)
-                .withWordsFromWordList(wordList));
+        final SeedCalculatorByWordListLookUp seedCalculatorWithWords = new SeedCalculator(JavaxPBKDF2WithHmacSHA512.INSTANCE)
+                .withWordsFromWordList(wordList);
+        final String seed2 = calculateSeed(mnemonic, passphrase, seedCalculatorWithWords);
+        final String seed3ForReuse = calculateSeed(mnemonic, passphrase, seedCalculatorWithWords);
         assertEquals(seed1, seed2);
+        assertEquals(seed1, seed3ForReuse);
         return seed1;
     }
 
-    private static String calculateSeed(List<String> mnemonic, String passphrase, SeedCalculatorByWordListLookUp seedCalculator) {
+    private static String calculateSeed(Collection<? extends CharSequence> mnemonic, String passphrase, SeedCalculatorByWordListLookUp seedCalculator) {
         return toHex(seedCalculator.calculateSeed(mnemonic, passphrase));
     }
 }

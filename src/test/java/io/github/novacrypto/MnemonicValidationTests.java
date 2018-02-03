@@ -42,7 +42,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
+import static io.github.novacrypto.TestCharSequence.preventToString;
+import static io.github.novacrypto.TestCharSequence.preventToStringAndSubSequence;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 
@@ -71,7 +74,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_english_word() throws Exception {
         try {
-            validate("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+            validateExpectingBadWord(
+                    "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
                     English.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"alan\", suggestions \"aisle\", \"alarm\"", e.getMessage());
@@ -85,7 +89,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void word_too_short() throws Exception {
         try {
-            validate("aero abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+            validateExpectingBadWord(
+                    "aero abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
                     English.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"aero\", suggestions \"advice\", \"aerobic\"", e.getMessage());
@@ -99,7 +104,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_english_word_alphabetically_before_all_others() throws Exception {
         try {
-            validate("aardvark abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+            validateExpectingBadWord(
+                    "aardvark abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
                     English.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"aardvark\", suggestions \"abandon\", \"ability\"", e.getMessage());
@@ -113,7 +119,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_english_word_alphabetically_after_all_others() throws Exception {
         try {
-            validate("zymurgy abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
+            validateExpectingBadWord(
+                    "zymurgy abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon alan",
                     English.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"zymurgy\", suggestions \"zone\", \"zoo\"", e.getMessage());
@@ -127,7 +134,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_japanese_word() throws Exception {
         try {
-            validate("そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
+            validateExpectingBadWord(
+                    "そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
                     Japanese.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
@@ -141,7 +149,8 @@ public final class MnemonicValidationTests {
     @Test(expected = WordNotFoundException.class)
     public void bad_japanese_word_normalized_behaviour() throws Exception {
         try {
-            validate("そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
+            validateExpectingBadWord(
+                    "そつう　れきだ　ほんやく　わかす　りくつ　ばいか　ろせん　やちん　そつう　れきだい　ほんやく　わかめ",
                     Japanese.INSTANCE);
         } catch (WordNotFoundException e) {
             assertEquals("Word not found in word list \"れきだ\", suggestions \"れきし\", \"れきだい\"", e.getMessage());
@@ -271,7 +280,26 @@ public final class MnemonicValidationTests {
         assertEquals(18, testCaseCount);
     }
 
+    private enum ValidateMode {
+        NOT_EXPECTING_BAD_WORD,
+        EXPECTING_BAD_WORD
+    }
+
     private boolean validate(String mnemonic, WordList wordList) throws
+            InvalidWordCountException,
+            WordNotFoundException,
+            UnexpectedWhiteSpaceException {
+        return validate(mnemonic, wordList, ValidateMode.NOT_EXPECTING_BAD_WORD);
+    }
+
+    private boolean validateExpectingBadWord(String mnemonic, WordList wordList) throws
+            InvalidWordCountException,
+            WordNotFoundException,
+            UnexpectedWhiteSpaceException {
+        return validate(mnemonic, wordList, ValidateMode.EXPECTING_BAD_WORD);
+    }
+
+    private boolean validate(String mnemonic, WordList wordList, ValidateMode validateMode) throws
             InvalidWordCountException,
             WordNotFoundException,
             UnexpectedWhiteSpaceException {
@@ -280,11 +308,17 @@ public final class MnemonicValidationTests {
                 case ValidateWholeString: {
                     MnemonicValidator
                             .ofWordList(wordList)
-                            .validate(mnemonic);
+                            .validate(validateMode == ValidateMode.EXPECTING_BAD_WORD
+                                    ? mnemonic
+                                    : preventToString(mnemonic));
                     break;
                 }
                 case ValidateAsStringList: {
-                    final List<String> words = Arrays.asList(mnemonic.split("[ \u3000]"));
+                    final List<CharSequence> words = Arrays.stream(mnemonic.split("[ \u3000]"))
+                            .map(sequence -> validateMode == ValidateMode.EXPECTING_BAD_WORD
+                                    ? sequence
+                                    : preventToStringAndSubSequence(sequence))
+                            .collect(Collectors.toList());
                     MnemonicValidator
                             .ofWordList(wordList)
                             .validate(words);
