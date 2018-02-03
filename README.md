@@ -28,7 +28,7 @@ Add dependency:
 
 ```
 dependencies {
-    compile 'io.github.novacrypto:BIP39:0.1.8'
+    compile 'io.github.novacrypto:BIP39:0.1.9'
 }
 
 ```
@@ -104,6 +104,8 @@ byte[] seed = new SeedCalculator()
                      .withWordsFromWordList(English.INSTANCE)
                      .calculateSeed(mnemonicWordsInAList, passphrase);
 ```
+
+Note: it will work for words off of the word list, but it allows use of secure CharSequences if they match the wordlist, normalized or not (as they are never `toString`ed)
 
 Those examples both use SpongyCastle, if you don't need or want that dependency, you can use `javax.crypto` like so:
 
