@@ -83,7 +83,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.code.gson:gson:2.8.5'
     testCompile 'org.assertj:assertj-core:3.11.1'
-    testCompile 'io.github.novacrypto:BIP32:0.0.9'
+    testCompile 'io.github.novacrypto:BIP32:2018.10.06'
 }
 
 compileJava.options.encoding = 'UTF-8'
