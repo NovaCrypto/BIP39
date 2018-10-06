@@ -19,5 +19,5 @@
  *  You can contact the authors via github issues.
  */
 
-rootProject.name = 'bip39'
+rootProject.name = 'BIP39'
 
