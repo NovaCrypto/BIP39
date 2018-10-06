@@ -24,8 +24,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     }
 }
 
@@ -82,8 +82,8 @@ dependencies {
     compile 'io.github.novacrypto:SHA256:0.0.1@jar'
     compile 'io.github.novacrypto:ToRuntime:0.9.0@jar'
     testCompile 'junit:junit:4.12'
-    testCompile 'com.google.code.gson:gson:2.8.2'
-    testCompile 'org.assertj:assertj-core:3.9.0'
+    testCompile 'com.google.code.gson:gson:2.8.5'
+    testCompile 'org.assertj:assertj-core:3.11.1'
     testCompile 'io.github.novacrypto:BIP32:0.0.9'
 }
 
