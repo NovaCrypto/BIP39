@@ -110,7 +110,7 @@ Note: it will work for words off of the word list, but it allows use of secure C
 Those examples both use SpongyCastle, if you don't need or want that dependency, you can use `javax.crypto` like so:
 
 ```
-byte[] seed = new SeedCalculator(JavaxPBKDF2WithHmacSHA256.INSTANCE).calculateSeed(mnemonic, passphrase);
+byte[] seed = new SeedCalculator(JavaxPBKDF2WithHmacSHA512.INSTANCE).calculateSeed(mnemonic, passphrase);
 ```
 
 That will not work on Android API < 26 https://developer.android.com/reference/javax/crypto/SecretKeyFactory.html and see Issue #17.
