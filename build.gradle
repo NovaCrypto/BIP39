@@ -29,6 +29,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.github.spotbugs' version '1.6.9'
+}
+
 apply plugin: 'java'
 apply from: 'bintray.gradle'
 
@@ -36,6 +40,15 @@ apply from: 'bintray.gradle'
 // ./gradlew dependencyUpdates -Drevision=release
 // https://github.com/ben-manes/gradle-versions-plugin
 apply plugin: 'com.github.ben-manes.versions'
+
+allprojects {
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+}
 
 group 'io.github.novacrypto'
 version '2018.10.06'
