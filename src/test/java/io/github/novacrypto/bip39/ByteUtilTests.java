@@ -25,12 +25,14 @@ import org.junit.Test;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public final class ByteUtilTests {
 
     @Test
     public void forCodeCoverageOnly_create() {
-        new ByteUtils();
+        //noinspection ObviousNullCheck
+        assertNotNull(new ByteUtils());
     }
 
     @Test

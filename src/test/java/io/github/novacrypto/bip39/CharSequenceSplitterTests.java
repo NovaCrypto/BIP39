@@ -107,14 +107,14 @@ public final class CharSequenceSplitterTests {
         assertEquals(0, spy.toStringCalls);
     }
 
-    private class Spy implements CharSequence {
+    private static class Spy implements CharSequence {
         private final CharSequence inner;
         int lengthCalls;
         int charAtCalls;
         int subSequenceCalls;
         int toStringCalls;
 
-        public Spy(CharSequence inner) {
+        Spy(CharSequence inner) {
             this.inner = inner;
         }
 

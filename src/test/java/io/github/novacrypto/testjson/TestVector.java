@@ -24,10 +24,19 @@ package io.github.novacrypto.testjson;
 import com.google.gson.annotations.SerializedName;
 
 public final class TestVector {
+
+    @SerializedName("mnemonic")
     public String mnemonic;
+
+    @SerializedName("passphrase")
     public String passphrase;
+
+    @SerializedName("seed")
     public String seed;
+
+    @SerializedName("entropy")
     public String entropy;
+
     @SerializedName("bip32_xprv")
     public String bip32Xprv;
 }

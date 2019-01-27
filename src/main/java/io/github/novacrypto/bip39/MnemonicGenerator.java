@@ -56,7 +56,7 @@ public final class MnemonicGenerator {
             final CharSequence entropyHex,
             final Target target) {
         final int length = entropyHex.length();
-        if (length % 2 == 1)
+        if (length % 2 != 0)
             throw new RuntimeException("Length of hex chars must be divisible by 2");
         final byte[] entropy = new byte[length / 2];
         try {

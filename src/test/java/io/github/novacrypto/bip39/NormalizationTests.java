@@ -23,10 +23,13 @@ package io.github.novacrypto.bip39;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
+
 public final class NormalizationTests {
 
     @Test
     public void forCodeCoverageOnly_create() {
-        new Normalization();
+        //noinspection ObviousNullCheck
+        assertNotNull(new Normalization());
     }
 }
