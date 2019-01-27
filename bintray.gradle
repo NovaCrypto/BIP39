@@ -70,6 +70,18 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 dependencyUpdates {
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
     outputFormatter = { result ->
         if (!result.outdated.dependencies.isEmpty()) {
             throw new GradleException('Abort, there are dependencies to update.')
