@@ -33,6 +33,9 @@ plugins {
     id 'com.github.spotbugs' version '1.6.9'
 }
 
+group 'io.github.novacrypto'
+version '2019.01.27'
+
 apply plugin: 'java'
 apply from: 'bintray.gradle'
 
@@ -54,15 +57,12 @@ allprojects {
     }
 }
 
-group 'io.github.novacrypto'
-version '2019.01.27'
-
 // To upload a new version
 // ./gradlew clean build bintrayUpload -Puser=user -Pkey=APIKEY
 bintray {
     user = project.ext.properties.user
     key = project.ext.properties.key
-    publications = ['MyPublication']
+    publications = ['maven']
     pkg {
         repo = 'BIP'
         name = project.name
@@ -95,12 +95,12 @@ compileJava {
 
 dependencies {
     compile 'com.madgag.spongycastle:core:1.58.0.0@jar'
-    compile 'io.github.novacrypto:SHA256:2018.10.06@jar'
-    compile 'io.github.novacrypto:ToRuntime:2018.10.06@jar'
+    compile 'io.github.novacrypto:SHA256:2019.01.27@jar'
+    compile 'io.github.novacrypto:ToRuntime:2019.01.27@jar'
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.code.gson:gson:2.8.5'
     testCompile 'org.assertj:assertj-core:3.11.1'
-    testCompile 'io.github.novacrypto:BIP32:2018.10.06'
+    testCompile 'io.github.novacrypto:BIP32:2019.01.27'
 }
 
 compileJava.options.encoding = 'UTF-8'

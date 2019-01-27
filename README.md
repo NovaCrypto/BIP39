@@ -28,7 +28,7 @@ Add dependency:
 
 ```
 dependencies {
-    compile 'io.github.novacrypto:BIP39:2018.10.06'
+    compile 'io.github.novacrypto:BIP39:2019.01.27'
 }
 
 ```
