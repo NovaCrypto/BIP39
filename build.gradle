@@ -51,7 +51,7 @@ allprojects {
 }
 
 group 'io.github.novacrypto'
-version '2018.10.06'
+version '2019.01.27'
 
 // To upload a new version
 // ./gradlew clean build bintrayUpload -Puser=user -Pkey=APIKEY
