@@ -41,6 +41,10 @@ apply from: 'bintray.gradle'
 // https://github.com/ben-manes/gradle-versions-plugin
 apply plugin: 'com.github.ben-manes.versions'
 
+spotbugs {
+    toolVersion = '3.1.11'
+}
+
 allprojects {
     tasks.withType(com.github.spotbugs.SpotBugsTask) {
         reports {
