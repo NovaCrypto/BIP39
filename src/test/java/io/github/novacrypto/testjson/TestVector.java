@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,10 +24,19 @@ package io.github.novacrypto.testjson;
 import com.google.gson.annotations.SerializedName;
 
 public final class TestVector {
+
+    @SerializedName("mnemonic")
     public String mnemonic;
+
+    @SerializedName("passphrase")
     public String passphrase;
+
+    @SerializedName("seed")
     public String seed;
+
+    @SerializedName("entropy")
     public String entropy;
+
     @SerializedName("bip32_xprv")
     public String bip32Xprv;
 }

@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,12 +25,14 @@ import org.junit.Test;
 
 import static io.github.novacrypto.bip39.ByteUtils.next11Bits;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public final class ByteUtilTests {
 
     @Test
     public void forCodeCoverageOnly_create() {
-        new ByteUtils();
+        //noinspection ObviousNullCheck
+        assertNotNull(new ByteUtils());
     }
 
     @Test

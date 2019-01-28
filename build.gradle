@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,13 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.github.spotbugs' version '1.6.9'
+}
+
+group 'io.github.novacrypto'
+version '2019.01.27'
+
 apply plugin: 'java'
 apply from: 'bintray.gradle'
 
@@ -37,15 +44,25 @@ apply from: 'bintray.gradle'
 // https://github.com/ben-manes/gradle-versions-plugin
 apply plugin: 'com.github.ben-manes.versions'
 
-group 'io.github.novacrypto'
-version '2018.10.06'
+spotbugs {
+    toolVersion = '3.1.11'
+}
+
+allprojects {
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+}
 
 // To upload a new version
 // ./gradlew clean build bintrayUpload -Puser=user -Pkey=APIKEY
 bintray {
     user = project.ext.properties.user
     key = project.ext.properties.key
-    publications = ['MyPublication']
+    publications = ['maven']
     pkg {
         repo = 'BIP'
         name = project.name
@@ -78,12 +95,12 @@ compileJava {
 
 dependencies {
     compile 'com.madgag.spongycastle:core:1.58.0.0@jar'
-    compile 'io.github.novacrypto:SHA256:2018.10.06@jar'
-    compile 'io.github.novacrypto:ToRuntime:2018.10.06@jar'
+    compile 'io.github.novacrypto:SHA256:2019.01.27@jar'
+    compile 'io.github.novacrypto:ToRuntime:2019.01.27@jar'
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.code.gson:gson:2.8.5'
     testCompile 'org.assertj:assertj-core:3.11.1'
-    testCompile 'io.github.novacrypto:BIP32:2018.10.06'
+    testCompile 'io.github.novacrypto:BIP32:2019.01.27'
 }
 
 compileJava.options.encoding = 'UTF-8'

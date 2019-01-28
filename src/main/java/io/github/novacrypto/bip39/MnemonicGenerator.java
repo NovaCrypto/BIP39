@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public final class MnemonicGenerator {
             final CharSequence entropyHex,
             final Target target) {
         final int length = entropyHex.length();
-        if (length % 2 == 1)
+        if (length % 2 != 0)
             throw new RuntimeException("Length of hex chars must be divisible by 2");
         final byte[] entropy = new byte[length / 2];
         try {

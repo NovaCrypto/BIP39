@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ artifacts {
 
 publishing {
     publications {
-        MyPublication(MavenPublication) {
+        maven(MavenPublication) {
             from components.java
             artifact sourcesJar
             artifact javadocJar
@@ -57,7 +57,7 @@ publishing {
 }
 
 jacoco {
-    toolVersion = '0.8.2'
+    toolVersion = '0.8.3'
 }
 
 jacocoTestReport {
@@ -70,6 +70,18 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 dependencyUpdates {
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
     outputFormatter = { result ->
         if (!result.outdated.dependencies.isEmpty()) {
             throw new GradleException('Abort, there are dependencies to update.')

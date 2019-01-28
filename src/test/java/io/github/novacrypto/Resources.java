@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,21 +25,28 @@ import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertNotNull;
 
 public final class Resources {
 
     private Resources() {
     }
 
-    public static <T> T loadJsonResource(String resourceName, Class<T> classOfT) {
+    public static <T> T loadJsonResource(final String resourceName, final Class<T> classOfT) {
         try {
-            try (final InputStreamReader in = new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(resourceName))) {
-                final String json = new BufferedReader(in).lines().collect(Collectors.joining("\n"));
-                return new Gson().fromJson(json, classOfT);
+            try (final InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(resourceName)) {
+                assertNotNull(stream);
+                try (final BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                    final String json = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+                    return new Gson().fromJson(json, classOfT);
+                }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }

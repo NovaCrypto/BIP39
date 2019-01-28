@@ -1,6 +1,6 @@
 /*
  *  BIP39 library, a Java implementation of BIP39
- *  Copyright (C) 2017-2018 Alan Evans, NovaCrypto
+ *  Copyright (C) 2017-2019 Alan Evans, NovaCrypto
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package io.github.novacrypto.wordlists;
 
 import io.github.novacrypto.bip39.WordList;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.Normalizer;
 
@@ -36,9 +37,9 @@ final class WordListHashing {
     static String hashWordList(final WordList wordList) {
         final MessageDigest digest = toRuntime(() -> MessageDigest.getInstance("SHA-256"));
         for (int i = 0; i < WORD_COUNT; i++) {
-            digest.update((wordList.getWord(i) + "\n").getBytes());
+            digest.update((wordList.getWord(i) + "\n").getBytes(StandardCharsets.UTF_8));
         }
-        digest.update(("" + wordList.getSpace()).getBytes());
+        digest.update(("" + wordList.getSpace()).getBytes(StandardCharsets.UTF_8));
         return toHex(digest.digest());
     }
 
