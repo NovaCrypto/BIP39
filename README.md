@@ -6,21 +6,11 @@ Apart from generating a seed, only English, French, Spanish and Japanese [curren
 
 # Install
 
-Use either of these repositories:
+Declare repository:
 
 ```
 repositories {
     jcenter()
-}
-```
-
-Or:
-
-```
-repositories {
-    maven {
-        url 'https://dl.bintray.com/novacrypto/BIP/'
-    }
 }
 ```
 
